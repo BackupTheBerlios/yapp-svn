@@ -51,25 +51,25 @@ void yappiServer::set_connections (int value ) {
 /**
  * 
  */
- yappiServer::listenConnection () {
+void yappiServer::listenConnection () {
   
 }
 /**
  * 
  */
- yappiServer::localSearch () {
+void yappiServer::localSearch () {
   
 }
 /**
  * 
  */
- yappiServer::forwardSearch () {
+void yappiServer::forwardSearch () {
   
 }
 /**
  * 
  */
- yappiServer::newData () {
+void yappiServer::newData () {
   
 }
 

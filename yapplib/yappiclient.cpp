@@ -48,7 +48,7 @@ dataStream yappiClient::dataPublish (dataType dtType, string code) {
  * Used to publish data events. dataPublish allows to 
  * declare a new stream, dataUpdate puts data in the stream.
  */
- yappiClient::dataUpdate (dataTick tick, dataStream dtStream) {
+void yappiClient::dataUpdate (dataTick tick, dataStream dtStream) {
   
 }
 /**

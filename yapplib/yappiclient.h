@@ -55,13 +55,13 @@ public:
   /**
    * 
    */
-  dataStream  dataPublish (dataType dtType, string code);
+dataStream  dataPublish (dataType dtType, string code);
     
   
   /**
    * 
    */
-    dataUpdate (dataTick tick, dataStream dtStream);
+void    dataUpdate (dataTick tick, dataStream dtStream);
     
   
 /**
