@@ -19,11 +19,11 @@
  
 **/
 
+using namespace std;
+
 #ifndef DATAENTITY_H
 #define DATAENTITY_H
 #include <string>
-
-using namespace std ; 
 
 /**
  * Class dataEntity

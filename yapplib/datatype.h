@@ -19,11 +19,11 @@
  
 **/
 
+using namespace std;
+
 #ifndef DATATYPE_H
 #define DATATYPE_H
 #include <string>
-
-using namespace std;
 
 /**
  * Class dataType
@@ -116,13 +116,13 @@ private:
   /**
    * 
    */
-  string get_template ( );
+  string get_dtemplate ( );
     
   
   /**
    * 
    */
-  void set_template (string value );
+  void set_dtemplate (string value );
     
   
 };

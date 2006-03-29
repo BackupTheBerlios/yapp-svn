@@ -19,6 +19,8 @@
  
 **/
 
+using namespace std;
+
 #ifndef DATAEVENT_H
 #define DATAEVENT_H
 #include <string>

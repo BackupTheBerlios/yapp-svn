@@ -19,12 +19,12 @@
  
 **/
 
+using namespace std;
+
 #ifndef DATATICK_H
 #define DATATICK_H
 #include <string>
 #include "datatype.h"
-
-using namespace std ;
 
 class dataTick {
 /**

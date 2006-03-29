@@ -19,6 +19,8 @@
  
 **/
 
+using namespace std;
+
 #ifndef DATASTREAM_H
 #define DATASTREAM_H
 #include <string>

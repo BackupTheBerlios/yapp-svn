@@ -19,6 +19,8 @@
  
 **/
 
+using namespace std;
+
 #ifndef YAPPICLIENT_H
 #define YAPPICLIENT_H
 #include <string>

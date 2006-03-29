@@ -19,6 +19,8 @@
  
 **/
 
+using namespace std;
+
 #ifndef YAPPISERVER_H
 #define YAPPISERVER_H
 #include <string>
