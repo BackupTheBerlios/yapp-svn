@@ -1,6 +1,6 @@
 /**
 
-  yappiclient.h - Copyright enrique
+  yappinode.h - Copyright enrique
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -21,15 +21,12 @@
 
 using namespace std;
 
-#ifndef YAPPICLIENT_H
-#define YAPPICLIENT_H
+#ifndef YAPPINODE_H
+#define YAPPINODE_H
 #include <string>
-#include "yappinode.h"
-#include "datastream.h"
-#include "datatype.h"
-#include "datatick.h"
+#include "yappiclient.h"
 
-class yappiClient {
+class yappiNode {
 /**
  * Public stuff
  */
@@ -46,28 +43,10 @@ public:
   /**
    * Empty Constructor
    */
-  yappiClient ( ) { }
+  yappiNode ( ) { }
   /**
    * Accessor Methods
    */
-  /**
-   * Operations
-   */
-  /**
-   * Declare a new stream of data.
-   * This should then be notified to the network if we want
-   * to make it available to others.
-   */
-  dataStream  dataPublish (dataType dtType, string code);
-    
-  
-  /**
-   * Used to publish data events. dataPublish allows to 
-   * declare a new stream, dataUpdate puts data in the stream.
-   */
-    dataUpdate (dataTick tick, dataStream dtStream);
-    
-  
 /**
  * Protected stuff
  */
@@ -75,8 +54,6 @@ protected:
   /**
    * Fields
    */
-   string id;
-   int connectStatus;
   /**
    * 
    */
@@ -85,33 +62,6 @@ protected:
    */
   /**
    * Accessor Methods
-   */
-  /**
-   * 
-   */
-  string get_id ( );
-    
-  
-  /**
-   * 
-   */
-  void set_id (string value );
-    
-  
-  /**
-   * 
-   */
-  int get_connectStatus ( );
-    
-  
-  /**
-   * 
-   */
-  void set_connectStatus (int value );
-    
-  
-  /**
-   * Operations
    */
 /**
  * Private stuff
@@ -129,9 +79,6 @@ private:
   /**
    * Accessor Methods
    */
-  /**
-   * Operations
-   */
 };
-#endif //YAPPICLIENT_H
+#endif //YAPPINODE_H
 

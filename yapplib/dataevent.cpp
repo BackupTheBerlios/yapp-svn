@@ -56,7 +56,7 @@ void dataEvent::set_data (dataTick value ) {
  * Contributor is the Client ID of the original contributor
  * @return the value of contributor
  */
-string dataEvent::get_contributor ( ) {
+yappiNode dataEvent::get_contributor ( ) {
   
 }
 /**
@@ -64,7 +64,7 @@ string dataEvent::get_contributor ( ) {
  * Contributor is the Client ID of the original contributor
  * @param value the value of contributor
  */
-void dataEvent::set_contributor (string value ) {
+void dataEvent::set_contributor (yappiNode value ) {
   
 }
 

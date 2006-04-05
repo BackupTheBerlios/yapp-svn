@@ -26,6 +26,7 @@ using namespace std;
 #include <string>
 #include "dataentity.h"
 #include "datatick.h"
+#include "yappinode.h"
 
 class dataEvent {
 /**
@@ -56,6 +57,10 @@ protected:
    * Fields
    */
   /**
+   * Contributor is the Client ID of the original contributor
+   */
+   yappiNode contributor;
+  /**
    * 
    */
   /**
@@ -64,6 +69,22 @@ protected:
   /**
    * Accessor Methods
    */
+  /**
+   * Get the value of contributor
+   * Contributor is the Client ID of the original contributor
+   * @return the value of contributor
+   */
+  yappiNode get_contributor ( );
+    
+  
+  /**
+   * Set the value of contributor
+   * Contributor is the Client ID of the original contributor
+   * @param value the value of contributor
+   */
+  void set_contributor (yappiNode value );
+    
+  
 /**
  * Private stuff
  */
@@ -73,10 +94,6 @@ private:
    */
    dataEntity evDEntity;
    dataTick data;
-  /**
-   * Contributor is the Client ID of the original contributor
-   */
-   string contributor;
   /**
    * 
    */
@@ -108,22 +125,6 @@ private:
    * 
    */
   void set_data (dataTick value );
-    
-  
-  /**
-   * Get the value of contributor
-   * Contributor is the Client ID of the original contributor
-   * @return the value of contributor
-   */
-  string get_contributor ( );
-    
-  
-  /**
-   * Set the value of contributor
-   * Contributor is the Client ID of the original contributor
-   * @param value the value of contributor
-   */
-  void set_contributor (string value );
     
   
 };

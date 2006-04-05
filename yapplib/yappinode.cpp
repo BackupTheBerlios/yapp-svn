@@ -1,6 +1,6 @@
 /**
 
-  yappiclient.cpp - Copyright enrique
+  yappinode.cpp - Copyright enrique
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -19,7 +19,7 @@
 
 **/
 
-#include "yappiclient.h"
+#include "yappinode.h"
 
 /**
  * Constructors/Destructors
@@ -27,43 +27,4 @@
 /**
  * Methods
  */
-/**
- * Declare a new stream of data.
- * This should then be notified to the network if we want
- * to make it available to others.
- */
-dataStream yappiClient::dataPublish (dataType dtType, string code) {
-  
-}
-/**
- * Used to publish data events. dataPublish allows to 
- * declare a new stream, dataUpdate puts data in the stream.
- */
- yappiClient::dataUpdate (dataTick tick, dataStream dtStream) {
-  
-}
-/**
- * 
- */
-string yappiClient::get_id ( ) {
-  
-}
-/**
- * 
- */
-void yappiClient::set_id (string value ) {
-  
-}
-/**
- * 
- */
-int yappiClient::get_connectStatus ( ) {
-  
-}
-/**
- * 
- */
-void yappiClient::set_connectStatus (int value ) {
-  
-}
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<XMI xmlns:UML="http://schema.omg.org/spec/UML/1.3" verified="false" timestamp="2006-03-28T23:43:37" xmi.version="1.2" >
+<XMI xmlns:UML="http://schema.omg.org/spec/UML/1.3" verified="false" timestamp="2006-04-06T00:23:40" xmi.version="1.2" >
  <XMI.header>
   <XMI.documentation>
    <XMI.exporter>umbrello uml modeller http://uml.sf.net</XMI.exporter>
@@ -23,12 +23,13 @@
     <UML:DataType stereotype="13" isSpecification="false" isLeaf="false" visibility="public" xmi.id="27" isRoot="false" isAbstract="false" name="void" />
     <UML:Class isSpecification="false" isLeaf="false" visibility="public" xmi.id="21" isRoot="false" isAbstract="false" name="yappiClient" >
      <UML:Classifier.feature>
-      <UML:Attribute isSpecification="false" isLeaf="false" visibility="private" xmi.id="66" isRoot="false" initialValue="" type="20" isAbstract="false" name="id" />
+      <UML:Attribute isSpecification="false" isLeaf="false" visibility="protected" xmi.id="66" isRoot="false" initialValue="" type="20" isAbstract="false" name="id" />
+      <UML:Attribute isSpecification="false" isLeaf="false" visibility="protected" xmi.id="176" isRoot="false" initialValue="" type="12" isAbstract="false" name="connectStatus" />
       <UML:Operation comment="Declare a new stream of data.
 This should then be notified to the network if we want
 to make it available to others." isSpecification="false" isLeaf="false" visibility="public" xmi.id="31" isRoot="false" isAbstract="false" name="dataPublish" >
        <UML:BehavioralFeature.parameter>
-        <UML:Parameter kind="return" xmi.id="157" type="68" />
+        <UML:Parameter kind="return" xmi.id="450" type="68" />
         <UML:Parameter isSpecification="false" isLeaf="false" visibility="private" xmi.id="94" isRoot="false" value="" type="52" isAbstract="false" name="dtType" />
         <UML:Parameter isSpecification="false" isLeaf="false" visibility="private" xmi.id="97" isRoot="false" value="" type="20" isAbstract="false" name="code" />
        </UML:BehavioralFeature.parameter>
@@ -38,6 +39,19 @@ declare a new stream, dataUpdate puts data in the stream." isSpecification="fals
        <UML:BehavioralFeature.parameter>
         <UML:Parameter comment="The tick with the data to be published." isSpecification="false" isLeaf="false" visibility="private" xmi.id="118" isRoot="false" value="" type="42" isAbstract="false" name="tick" />
         <UML:Parameter comment="The stream to which the data is to be published." isSpecification="false" isLeaf="false" visibility="private" xmi.id="122" isRoot="false" value="" type="68" isAbstract="false" name="dtStream" />
+       </UML:BehavioralFeature.parameter>
+      </UML:Operation>
+      <UML:Operation comment="Triggers search of peers. It requires a initial array of nodes to work . It will call yappiclient.connect for each node found until the limit is found." isSpecification="false" isLeaf="false" visibility="public" xmi.id="385" isRoot="false" isAbstract="false" name="findPeers" >
+       <UML:BehavioralFeature.parameter>
+        <UML:Parameter kind="return" xmi.id="451" type="12" />
+        <UML:Parameter comment="A list of nodes to connect initially. This list is a list of well known servers that contain information about nodes in the network" isSpecification="false" isLeaf="false" visibility="private" xmi.id="402" isRoot="false" value="" type="240" isAbstract="false" name="nodeListSeed" />
+        <UML:Parameter comment="A maximum number of peers to connect to." isSpecification="false" isLeaf="false" visibility="private" xmi.id="411" isRoot="false" value="0" type="12" isAbstract="false" name="maxPeers" />
+       </UML:BehavioralFeature.parameter>
+      </UML:Operation>
+      <UML:Operation isSpecification="false" isLeaf="false" visibility="private" xmi.id="420" isRoot="false" isAbstract="false" name="connect" >
+       <UML:BehavioralFeature.parameter>
+        <UML:Parameter kind="return" xmi.id="452" type="184" />
+        <UML:Parameter comment="A node that is ready to accept connections. This is possibly one of the nodes returned by findPeers as result of supernode request." isSpecification="false" isLeaf="false" visibility="private" xmi.id="421" isRoot="false" value="" type="240" isAbstract="false" name="yappiPeer" />
        </UML:BehavioralFeature.parameter>
       </UML:Operation>
      </UML:Classifier.feature>
@@ -55,7 +69,7 @@ declare a new stream, dataUpdate puts data in the stream." isSpecification="fals
      <UML:Classifier.feature>
       <UML:Attribute isSpecification="false" isLeaf="false" visibility="private" xmi.id="40" isRoot="false" initialValue="" type="35" isAbstract="false" name="evDEntity" />
       <UML:Attribute isSpecification="false" isLeaf="false" visibility="private" xmi.id="65" isRoot="false" initialValue="" type="42" isAbstract="false" name="data" />
-      <UML:Attribute comment="Contributor is the Client ID of the original contributor" isSpecification="false" isLeaf="false" visibility="private" xmi.id="67" isRoot="false" initialValue="" type="20" isAbstract="false" name="contributor" />
+      <UML:Attribute comment="Contributor is the Client ID of the original contributor" isSpecification="false" isLeaf="false" visibility="protected" xmi.id="67" isRoot="false" initialValue="" type="240" isAbstract="false" name="contributor" />
      </UML:Classifier.feature>
     </UML:Class>
     <UML:Class comment="This is the data Reality to which a data event is linked:
@@ -91,18 +105,31 @@ created thereafter. Some examples should be provided
       <UML:Operation comment="Injects data to the stream and cascades to the network
 if there are subscribers." isSpecification="false" isLeaf="false" visibility="public" xmi.id="79" isRoot="false" isAbstract="false" name="injectData" >
        <UML:BehavioralFeature.parameter>
-        <UML:Parameter kind="return" xmi.id="158" type="12" />
+        <UML:Parameter kind="return" xmi.id="453" type="12" />
         <UML:Parameter comment="The data to be injected in the stream." isSpecification="false" isLeaf="false" visibility="private" xmi.id="80" isRoot="false" value="" type="42" isAbstract="false" name="tick" />
        </UML:BehavioralFeature.parameter>
       </UML:Operation>
       <UML:Operation comment="Reads more data from this stream.
 " isSpecification="false" isLeaf="false" visibility="public" xmi.id="82" isRoot="false" isAbstract="false" name="readData" >
        <UML:BehavioralFeature.parameter>
-        <UML:Parameter kind="return" xmi.id="159" type="12" />
+        <UML:Parameter kind="return" xmi.id="454" type="12" />
        </UML:BehavioralFeature.parameter>
       </UML:Operation>
      </UML:Classifier.feature>
     </UML:Class>
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" xmi.id="184" isRoot="false" isAbstract="false" name="yappiConnection" >
+     <UML:Classifier.feature>
+      <UML:Attribute comment="Contains the IP address of the remote node" isSpecification="false" isLeaf="false" visibility="protected" xmi.id="204" isRoot="false" initialValue="" type="20" isAbstract="false" name="remoteNode" />
+      <UML:Attribute comment="Indicates possible status:
+1. Active
+2. Stale
+3. Resetting
+4. Unknown" isSpecification="false" isLeaf="false" visibility="protected" xmi.id="211" isRoot="false" initialValue="" type="12" isAbstract="false" name="status" />
+     </UML:Classifier.feature>
+    </UML:Class>
+    <UML:Class isSpecification="false" isLeaf="false" visibility="public" xmi.id="240" isRoot="false" isAbstract="false" name="yappiNode" />
+    <UML:Actor isSpecification="false" isLeaf="false" visibility="public" xmi.id="359" isRoot="false" isAbstract="false" name="Contributor" />
+    <UML:UseCase isSpecification="false" isLeaf="false" visibility="public" xmi.id="363" isRoot="false" isAbstract="false" name="Has Data" />
     <UML:Association isSpecification="false" visibility="public" xmi.id="57" name="" >
      <UML:Association.connection>
       <UML:AssociationEnd isSpecification="false" visibility="public" changeability="changeable" isNavigable="true" xmi.id="58" aggregation="composite" type="42" name="" />
@@ -113,47 +140,56 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
   </UML:Model>
  </XMI.content>
  <XMI.extensions xmi.extender="umbrello" >
-  <docsettings viewid="11" documentation="" uniqueid="159" />
+  <docsettings viewid="11" documentation="" uniqueid="454" />
   <diagrams>
    <diagram snapgrid="0" showattsig="1" fillcolor="#ffffc0" linewidth="0" zoom="100" showgrid="0" showopsig="1" usefillcolor="1" snapx="10" canvaswidth="865" snapy="10" showatts="1" xmi.id="11" documentation="" type="402" showops="1" showpackage="0" name="class diagram" localid="900000" showstereotype="0" showscope="1" snapcsgrid="0" font="Cursor,10,-1,5,50,0,0,0,0,0" linecolor="#ff0000" canvasheight="692" >
     <widgets>
-     <classwidget usesdiagramfillcolour="0" width="467" showattsigs="601" usesdiagramusefillcolour="0" x="14" linecolour="#ff0000" y="19" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="72" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="21" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
-     <classwidget usesdiagramfillcolour="0" width="160" showattsigs="601" usesdiagramusefillcolour="0" x="644" linecolour="#ff0000" y="24" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="108" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="22" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
-     <classwidget usesdiagramfillcolour="0" width="171" showattsigs="601" usesdiagramusefillcolour="0" x="65" linecolour="#ff0000" y="237" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="81" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="33" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
-     <classwidget usesdiagramfillcolour="0" width="171" showattsigs="601" usesdiagramusefillcolour="0" x="384" linecolour="#ff0000" y="237" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="81" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="35" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
-     <classwidget usesdiagramfillcolour="0" width="139" showattsigs="601" usesdiagramusefillcolour="0" x="61" linecolour="#ff0000" y="361" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="81" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="42" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="0" width="485" showattsigs="601" usesdiagramusefillcolour="0" x="14" linecolour="#ff0000" y="19" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="126" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="21" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="0" width="160" showattsigs="601" usesdiagramusefillcolour="0" x="600" linecolour="#ff0000" y="31" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="108" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="22" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="0" width="193" showattsigs="601" usesdiagramusefillcolour="0" x="22" linecolour="#ff0000" y="159" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="81" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="33" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="0" width="171" showattsigs="601" usesdiagramusefillcolour="0" x="383" linecolour="#ff0000" y="239" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="81" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="35" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="0" width="139" showattsigs="601" usesdiagramusefillcolour="0" x="33" linecolour="#ff0000" y="361" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="81" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="42" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
      <classwidget usesdiagramfillcolour="0" width="151" showattsigs="601" usesdiagramusefillcolour="0" x="404" linecolour="#ff0000" y="361" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="81" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="52" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
-     <classwidget usesdiagramfillcolour="0" width="252" showattsigs="601" usesdiagramusefillcolour="0" x="227" linecolour="#ff0000" y="113" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="90" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="68" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="0" width="252" showattsigs="601" usesdiagramusefillcolour="0" x="64" linecolour="#ff0000" y="510" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="90" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="68" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="0" width="166" showattsigs="601" usesdiagramusefillcolour="0" x="601" linecolour="#ff0000" y="167" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="63" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="184" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
+     <classwidget usesdiagramfillcolour="1" width="90" showattsigs="601" usesdiagramusefillcolour="1" x="613" linecolour="none" y="276" showopsigs="601" linewidth="none" usesdiagramlinewidth="1" usesdiagramlinecolour="1" fillcolour="none" height="36" usefillcolor="1" showpubliconly="0" showattributes="1" isinstance="0" xmi.id="240" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="Cursor,10,-1,5,75,0,0,0,0,0" />
     </widgets>
     <messages/>
     <associations>
-     <assocwidget totalcounta="2" indexa="1" visibilityB="200" totalcountb="2" indexb="1" widgetbid="35" widgetaid="33" xmi.id="40" type="510" changeabilityA="900" changeabilityB="900" visibilityA="200" >
+     <assocwidget totalcounta="3" indexa="2" visibilityB="200" totalcountb="2" indexb="1" widgetbid="35" widgetaid="33" xmi.id="40" type="510" changeabilityA="900" changeabilityB="900" visibilityA="200" >
       <linepath>
-       <startpoint startx="236" starty="277" />
-       <endpoint endx="384" endy="277" />
+       <startpoint startx="150" starty="240" />
+       <endpoint endx="383" endy="279" />
        <point x="287" y="279" />
       </linepath>
-      <floatingtext usesdiagramfillcolour="1" width="95" usesdiagramusefillcolour="1" x="276" linecolour="none" y="239" linewidth="none" usesdiagramlinewidth="1" posttext="" usesdiagramlinecolour="1" role="710" fillcolour="none" height="24" usefillcolor="1" pretext="+" isinstance="0" xmi.id="63" text="evDEntity" font="helvetica,12,-1,0,50,0,0,0,0,0" />
+      <floatingtext usesdiagramfillcolour="1" width="95" usesdiagramusefillcolour="1" x="281" linecolour="none" y="288" linewidth="none" usesdiagramlinewidth="1" posttext="" usesdiagramlinecolour="1" role="710" fillcolour="none" height="24" usefillcolor="1" pretext="+" isinstance="0" xmi.id="344" text="evDEntity" font="helvetica,12,-1,0,50,0,0,0,0,0" />
      </assocwidget>
      <assocwidget totalcounta="3" indexa="1" totalcountb="3" indexb="1" widgetbid="52" widgetaid="42" xmi.id="57" >
       <linepath>
-       <startpoint startx="200" starty="388" />
+       <startpoint startx="172" starty="388" />
        <endpoint endx="404" endy="388" />
       </linepath>
      </assocwidget>
-     <assocwidget totalcounta="2" indexa="1" visibilityB="201" totalcountb="2" indexb="1" widgetbid="42" widgetaid="33" xmi.id="65" type="510" changeabilityA="900" changeabilityB="900" visibilityA="200" >
+     <assocwidget totalcounta="3" indexa="1" visibilityB="200" totalcountb="2" indexb="1" widgetbid="42" widgetaid="33" xmi.id="65" type="510" changeabilityA="900" changeabilityB="900" visibilityA="200" >
       <linepath>
-       <startpoint startx="150" starty="318" />
-       <endpoint endx="130" endy="361" />
+       <startpoint startx="86" starty="240" />
+       <endpoint endx="102" endy="361" />
       </linepath>
-      <floatingtext usesdiagramfillcolour="1" width="42" usesdiagramusefillcolour="1" x="132" linecolour="none" y="337" linewidth="none" usesdiagramlinewidth="1" posttext="" usesdiagramlinecolour="1" role="710" fillcolour="none" height="22" usefillcolor="1" pretext="-" isinstance="0" xmi.id="73" text="data" font="Cursor,10,-1,5,50,0,0,0,0,0" />
+      <floatingtext usesdiagramfillcolour="1" width="48" usesdiagramusefillcolour="1" x="93" linecolour="none" y="305" linewidth="none" usesdiagramlinewidth="1" posttext="" usesdiagramlinecolour="1" role="710" fillcolour="none" height="22" usefillcolor="1" pretext="+" isinstance="0" xmi.id="345" text="data" font="Cursor,10,-1,5,50,0,0,0,0,0" />
      </assocwidget>
-     <assocwidget totalcounta="3" indexa="2" visibilityB="201" totalcountb="3" indexb="2" widgetbid="52" widgetaid="42" xmi.id="56" type="510" changeabilityA="900" changeabilityB="900" visibilityA="200" >
+     <assocwidget totalcounta="3" indexa="2" visibilityB="200" totalcountb="3" indexb="2" widgetbid="52" widgetaid="42" xmi.id="56" type="510" changeabilityA="900" changeabilityB="900" visibilityA="200" >
       <linepath>
-       <startpoint startx="200" starty="415" />
+       <startpoint startx="172" starty="415" />
        <endpoint endx="404" endy="415" />
       </linepath>
-      <floatingtext usesdiagramfillcolour="1" width="51" usesdiagramusefillcolour="1" x="351" linecolour="none" y="417" linewidth="none" usesdiagramlinewidth="1" posttext="" usesdiagramlinecolour="1" role="710" fillcolour="none" height="22" usefillcolor="1" pretext="-" isinstance="0" xmi.id="78" text="dType" font="Cursor,10,-1,5,50,0,0,0,0,0" />
+      <floatingtext usesdiagramfillcolour="1" width="57" usesdiagramusefillcolour="1" x="273" linecolour="none" y="417" linewidth="none" usesdiagramlinewidth="1" posttext="" usesdiagramlinecolour="1" role="710" fillcolour="none" height="22" usefillcolor="1" pretext="+" isinstance="0" xmi.id="346" text="dType" font="Cursor,10,-1,5,50,0,0,0,0,0" />
+     </assocwidget>
+     <assocwidget totalcounta="2" indexa="1" visibilityB="200" totalcountb="2" indexb="1" widgetbid="42" widgetaid="68" xmi.id="85" type="510" changeabilityA="900" changeabilityB="900" visibilityA="200" >
+      <linepath>
+       <startpoint startx="190" starty="510" />
+       <endpoint endx="102" endy="442" />
+      </linepath>
+      <floatingtext usesdiagramfillcolour="1" width="58" usesdiagramusefillcolour="1" x="171" linecolour="none" y="421" linewidth="none" usesdiagramlinewidth="1" posttext="" usesdiagramlinecolour="1" role="710" fillcolour="none" height="22" usefillcolor="1" pretext="+" isinstance="0" xmi.id="347" text="lstTick" font="Cursor,10,-1,5,50,0,0,0,0,0" />
      </assocwidget>
     </associations>
    </diagram>
@@ -189,9 +225,17 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
      </listitem>
      <listitem open="1" type="813" id="21" >
       <listitem open="0" type="814" id="66" />
+      <listitem open="0" type="814" id="176" />
       <listitem open="0" type="815" id="31" />
       <listitem open="0" type="815" id="32" />
+      <listitem open="0" type="815" id="385" />
+      <listitem open="0" type="815" id="420" />
      </listitem>
+     <listitem open="1" type="813" id="184" >
+      <listitem open="0" type="814" id="204" />
+      <listitem open="0" type="814" id="211" />
+     </listitem>
+     <listitem open="1" type="813" id="240" />
      <listitem open="1" type="813" id="22" >
       <listitem open="0" type="814" id="24" />
       <listitem open="0" type="815" id="26" />
@@ -199,7 +243,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       <listitem open="0" type="815" id="29" />
       <listitem open="0" type="815" id="30" />
      </listitem>
-     <listitem open="1" type="830" label="Datatypes" >
+     <listitem open="0" type="830" label="Datatypes" >
       <listitem open="1" type="829" id="15" />
       <listitem open="1" type="829" id="14" />
       <listitem open="1" type="829" id="17" />
@@ -211,7 +255,10 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       <listitem open="1" type="829" id="27" />
      </listitem>
     </listitem>
-    <listitem open="1" type="802" label="Use Case View" />
+    <listitem open="1" type="802" label="Use Case View" >
+     <listitem open="1" type="811" id="359" />
+     <listitem open="1" type="812" id="363" />
+    </listitem>
     <listitem open="1" type="821" label="Component View" />
     <listitem open="1" type="827" label="Deployment View" />
     <listitem open="1" type="836" label="Entity Relationship Model" />
@@ -257,6 +304,26 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
           <cppcodedocumentation tag="" />
          </header>
         </codeaccessormethod>
+        <codeaccessormethod accessType="0" parent_id="176" tag="hblock_tag_2" canDelete="false" classfield_id="176" >
+         <header>
+          <cppcodedocumentation tag="" />
+         </header>
+        </codeaccessormethod>
+        <codeaccessormethod accessType="1" parent_id="176" tag="hblock_tag_3" canDelete="false" classfield_id="176" >
+         <header>
+          <cppcodedocumentation tag="" />
+         </header>
+        </codeaccessormethod>
+        <codeoperation parent_id="385" tag="operation_385" canDelete="false" >
+         <header>
+          <cppcodedocumentation tag="" text="Triggers search of peers. It requires a initial array of nodes to work . It will call yappiclient.connect for each node found until the limit is found." />
+         </header>
+        </codeoperation>
+        <codeoperation parent_id="420" tag="operation_420" canDelete="false" >
+         <header>
+          <cppcodedocumentation tag="" />
+         </header>
+        </codeoperation>
        </textblocks>
       </hierarchicalcodeblock>
      </textblocks>
@@ -279,6 +346,26 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
         </header>
        </codeaccessormethod>
        <codeaccessormethod accessType="1" parent_id="66" tag="hblock_tag_1" canDelete="false" classfield_id="66" >
+        <header>
+         <cppcodedocumentation tag="" />
+        </header>
+       </codeaccessormethod>
+      </codeclassfield>
+      <codeclassfield parent_id="176" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
+       <header>
+        <cppcodedocumentation tag="" />
+       </header>
+       <ccfdeclarationcodeblock parent_id="176" tag="" canDelete="false" indentLevel="1" text="FIX ME;" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" />
+        </header>
+       </ccfdeclarationcodeblock>
+       <codeaccessormethod accessType="0" parent_id="176" tag="hblock_tag_2" canDelete="false" classfield_id="176" >
+        <header>
+         <cppcodedocumentation tag="" />
+        </header>
+       </codeaccessormethod>
+       <codeaccessormethod accessType="1" parent_id="176" tag="hblock_tag_3" canDelete="false" classfield_id="176" >
         <header>
          <cppcodedocumentation tag="" />
         </header>
@@ -1048,6 +1135,118 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeclassfield>
      </classfields>
     </classifiercodedocument>
+    <classifiercodedocument writeOutCode="true" package="" id="184" parent_class="184" fileExt=".cpp" fileName="yappiconnection" >
+     <textblocks>
+      <codeblockwithcomments tag="includes" text="#include &quot;yappiconnection.h&quot;&amp;#010;" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <hierarchicalcodeblock tag="constructionMethodsBlock" canDelete="false" >
+       <header>
+        <cppcodedocumentation tag="" text="Constructors/Destructors" />
+       </header>
+       <textblocks/>
+      </hierarchicalcodeblock>
+      <hierarchicalcodeblock tag="otherMethodsBlock" canDelete="false" >
+       <header>
+        <cppcodedocumentation tag="" text="Methods" />
+       </header>
+       <textblocks>
+        <codeaccessormethod accessType="0" parent_id="204" tag="hblock_tag_0" canDelete="false" classfield_id="204" >
+         <header>
+          <cppcodedocumentation tag="" text="Get the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@return the value of remoteNode" />
+         </header>
+        </codeaccessormethod>
+        <codeaccessormethod accessType="1" parent_id="204" tag="hblock_tag_1" canDelete="false" classfield_id="204" >
+         <header>
+          <cppcodedocumentation tag="" text="Set the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@param value the value of remoteNode" />
+         </header>
+        </codeaccessormethod>
+        <codeaccessormethod accessType="0" parent_id="211" tag="hblock_tag_2" canDelete="false" classfield_id="211" >
+         <header>
+          <cppcodedocumentation tag="" text="Get the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@return the value of status" />
+         </header>
+        </codeaccessormethod>
+        <codeaccessormethod accessType="1" parent_id="211" tag="hblock_tag_3" canDelete="false" classfield_id="211" >
+         <header>
+          <cppcodedocumentation tag="" text="Set the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@param value the value of status" />
+         </header>
+        </codeaccessormethod>
+       </textblocks>
+      </hierarchicalcodeblock>
+     </textblocks>
+     <header>
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappiconnection.cpp - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010;&amp;#010;**/&amp;#010;" />
+     </header>
+     <classfields>
+      <codeclassfield parent_id="204" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
+       <header>
+        <cppcodedocumentation tag="" text="Contains the IP address of the remote node" />
+       </header>
+       <ccfdeclarationcodeblock parent_id="204" tag="" canDelete="false" indentLevel="1" text="FIX ME;" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" />
+        </header>
+       </ccfdeclarationcodeblock>
+       <codeaccessormethod accessType="0" parent_id="204" tag="hblock_tag_0" canDelete="false" classfield_id="204" >
+        <header>
+         <cppcodedocumentation tag="" text="Get the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@return the value of remoteNode" />
+        </header>
+       </codeaccessormethod>
+       <codeaccessormethod accessType="1" parent_id="204" tag="hblock_tag_1" canDelete="false" classfield_id="204" >
+        <header>
+         <cppcodedocumentation tag="" text="Set the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@param value the value of remoteNode" />
+        </header>
+       </codeaccessormethod>
+      </codeclassfield>
+      <codeclassfield parent_id="211" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
+       <header>
+        <cppcodedocumentation tag="" text="Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown" />
+       </header>
+       <ccfdeclarationcodeblock parent_id="211" tag="" canDelete="false" indentLevel="1" text="FIX ME;" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" />
+        </header>
+       </ccfdeclarationcodeblock>
+       <codeaccessormethod accessType="0" parent_id="211" tag="hblock_tag_2" canDelete="false" classfield_id="211" >
+        <header>
+         <cppcodedocumentation tag="" text="Get the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@return the value of status" />
+        </header>
+       </codeaccessormethod>
+       <codeaccessormethod accessType="1" parent_id="211" tag="hblock_tag_3" canDelete="false" classfield_id="211" >
+        <header>
+         <cppcodedocumentation tag="" text="Set the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@param value the value of status" />
+        </header>
+       </codeaccessormethod>
+      </codeclassfield>
+     </classfields>
+    </classifiercodedocument>
+    <classifiercodedocument writeOutCode="true" package="" id="240" parent_class="240" fileExt=".cpp" fileName="yappinode" >
+     <textblocks>
+      <codeblockwithcomments tag="includes" text="#include &quot;yappinode.h&quot;&amp;#010;" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <hierarchicalcodeblock tag="constructionMethodsBlock" canDelete="false" >
+       <header>
+        <cppcodedocumentation tag="" text="Constructors/Destructors" />
+       </header>
+       <textblocks/>
+      </hierarchicalcodeblock>
+      <hierarchicalcodeblock tag="otherMethodsBlock" canDelete="false" >
+       <header>
+        <cppcodedocumentation tag="" text="Methods" />
+       </header>
+       <textblocks/>
+      </hierarchicalcodeblock>
+     </textblocks>
+     <header>
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappinode.cpp - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010;&amp;#010;**/&amp;#010;" />
+     </header>
+     <classfields/>
+    </classifiercodedocument>
     <codedocument writeOutCode="true" package="" id="Makefile_DOC" fileExt="" fileName="Makefile" >
      <textblocks/>
      <header>
@@ -1061,7 +1260,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
         <cppcodedocumentation tag="" writeOutText="false" />
        </header>
       </codeblockwithcomments>
-      <codeblockwithcomments tag="includes" text="#include &lt;string>&amp;#010;#include &quot;datastream.h&quot;&amp;#010;#include &quot;datatype.h&quot;&amp;#010;#include &quot;datatick.h&quot;&amp;#010;" >
+      <codeblockwithcomments tag="includes" text="#include &lt;string>&amp;#010;#include &quot;datastream.h&quot;&amp;#010;#include &quot;datatype.h&quot;&amp;#010;#include &quot;datatick.h&quot;&amp;#010;#include &quot;yappinode.h&quot;&amp;#010;#include &quot;yappiconnection.h&quot;&amp;#010;" >
        <header>
         <cppcodedocumentation tag="" writeOutText="false" />
        </header>
@@ -1148,6 +1347,11 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
                   <cppcodedocumentation tag="" indentLevel="1" text="Used to publish data events. dataPublish allows to &amp;#010;declare a new stream, dataUpdate puts data in the stream." />
                  </header>
                 </codeoperation>
+                <codeoperation parent_id="385" tag="operation_385" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" indentLevel="1" text="Triggers search of peers. It requires a initial array of nodes to work . It will call yappiclient.connect for each node found until the limit is found." />
+                 </header>
+                </codeoperation>
                </textblocks>
               </hierarchicalcodeblock>
              </textblocks>
@@ -1163,7 +1367,18 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
              <header>
               <cppcodedocumentation tag="" indentLevel="1" text="Fields" />
              </header>
-             <textblocks/>
+             <textblocks>
+              <ccfdeclarationcodeblock parent_id="66" tag="tblock_0" canDelete="false" indentLevel="1" text=" string id;" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+               </header>
+              </ccfdeclarationcodeblock>
+              <ccfdeclarationcodeblock parent_id="176" tag="tblock_1" canDelete="false" indentLevel="1" text=" int connectStatus;" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+               </header>
+              </ccfdeclarationcodeblock>
+             </textblocks>
             </hierarchicalcodeblock>
             <hierarchicalcodeblock tag="protMethodsBlock" canDelete="false" indentLevel="1" >
              <header>
@@ -1191,7 +1406,28 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
                  <header>
                   <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
                  </header>
-                 <textblocks/>
+                 <textblocks>
+                  <codeaccessormethod accessType="0" parent_id="66" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="66" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" />
+                   </header>
+                  </codeaccessormethod>
+                  <codeaccessormethod accessType="1" parent_id="66" tag="hblock_tag_2" canDelete="false" indentLevel="1" classfield_id="66" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" />
+                   </header>
+                  </codeaccessormethod>
+                  <codeaccessormethod accessType="0" parent_id="176" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="176" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" />
+                   </header>
+                  </codeaccessormethod>
+                  <codeaccessormethod accessType="1" parent_id="176" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="176" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" />
+                   </header>
+                  </codeaccessormethod>
+                 </textblocks>
                 </hierarchicalcodeblock>
                </textblocks>
               </hierarchicalcodeblock>
@@ -1214,13 +1450,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
              <header>
               <cppcodedocumentation tag="" indentLevel="1" text="Fields" />
              </header>
-             <textblocks>
-              <ccfdeclarationcodeblock parent_id="66" tag="tblock_0" canDelete="false" indentLevel="1" text=" string id;" >
-               <header>
-                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
-               </header>
-              </ccfdeclarationcodeblock>
-             </textblocks>
+             <textblocks/>
             </hierarchicalcodeblock>
             <hierarchicalcodeblock tag="privMethodsBlock" canDelete="false" indentLevel="1" >
              <header>
@@ -1248,18 +1478,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
                  <header>
                   <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
                  </header>
-                 <textblocks>
-                  <codeaccessormethod accessType="0" parent_id="66" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="66" >
-                   <header>
-                    <cppcodedocumentation tag="" indentLevel="1" />
-                   </header>
-                  </codeaccessormethod>
-                  <codeaccessormethod accessType="1" parent_id="66" tag="hblock_tag_1" canDelete="false" indentLevel="1" classfield_id="66" >
-                   <header>
-                    <cppcodedocumentation tag="" indentLevel="1" />
-                   </header>
-                  </codeaccessormethod>
-                 </textblocks>
+                 <textblocks/>
                 </hierarchicalcodeblock>
                </textblocks>
               </hierarchicalcodeblock>
@@ -1267,7 +1486,13 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
                <header>
                 <cppcodedocumentation tag="" indentLevel="1" text="Operations" />
                </header>
-               <textblocks/>
+               <textblocks>
+                <codeoperation parent_id="420" tag="operation_420" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" indentLevel="1" text="&amp;#010;@param yappiPeer A node that is ready to accept connections. This is possibly one of the nodes returned by findPeers as result of supernode request." />
+                 </header>
+                </codeoperation>
+               </textblocks>
               </hierarchicalcodeblock>
              </textblocks>
             </hierarchicalcodeblock>
@@ -1284,7 +1509,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeblockwithcomments>
      </textblocks>
      <header>
-      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappiclient.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;" />
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappiclient.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
      </header>
      <classfields>
       <codeclassfield parent_id="66" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
@@ -1301,7 +1526,27 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
          <cppcodedocumentation tag="" indentLevel="1" />
         </header>
        </codeaccessormethod>
-       <codeaccessormethod accessType="1" parent_id="66" tag="hblock_tag_1" canDelete="false" indentLevel="1" classfield_id="66" >
+       <codeaccessormethod accessType="1" parent_id="66" tag="hblock_tag_2" canDelete="false" indentLevel="1" classfield_id="66" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" />
+        </header>
+       </codeaccessormethod>
+      </codeclassfield>
+      <codeclassfield parent_id="176" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
+       <header>
+        <cppcodedocumentation tag="" />
+       </header>
+       <ccfdeclarationcodeblock parent_id="176" tag="tblock_1" canDelete="false" indentLevel="1" text=" int connectStatus;" >
+        <header>
+         <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+        </header>
+       </ccfdeclarationcodeblock>
+       <codeaccessormethod accessType="0" parent_id="176" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="176" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" />
+        </header>
+       </codeaccessormethod>
+       <codeaccessormethod accessType="1" parent_id="176" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="176" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" />
         </header>
@@ -1549,7 +1794,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeblockwithcomments>
      </textblocks>
      <header>
-      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappiserver.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;" />
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappiserver.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
      </header>
      <classfields>
       <codeclassfield parent_id="24" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
@@ -1581,7 +1826,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
         <cppcodedocumentation tag="" writeOutText="false" />
        </header>
       </codeblockwithcomments>
-      <codeblockwithcomments tag="includes" text="#include &lt;string>&amp;#010;#include &quot;dataentity.h&quot;&amp;#010;#include &quot;datatick.h&quot;&amp;#010;" >
+      <codeblockwithcomments tag="includes" text="#include &lt;string>&amp;#010;#include &quot;dataentity.h&quot;&amp;#010;#include &quot;datatick.h&quot;&amp;#010;#include &quot;yappinode.h&quot;&amp;#010;" >
        <header>
         <cppcodedocumentation tag="" writeOutText="false" />
        </header>
@@ -1672,7 +1917,13 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
              <header>
               <cppcodedocumentation tag="" indentLevel="1" text="Fields" />
              </header>
-             <textblocks/>
+             <textblocks>
+              <ccfdeclarationcodeblock parent_id="67" tag="tblock_0" canDelete="false" indentLevel="1" text=" yappiNode contributor;" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Contributor is the Client ID of the original contributor" />
+               </header>
+              </ccfdeclarationcodeblock>
+             </textblocks>
             </hierarchicalcodeblock>
             <hierarchicalcodeblock tag="protMethodsBlock" canDelete="false" indentLevel="1" >
              <header>
@@ -1700,7 +1951,18 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
                  <header>
                   <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
                  </header>
-                 <textblocks/>
+                 <textblocks>
+                  <codeaccessormethod accessType="0" parent_id="67" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="67" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" text="Get the value of contributor&amp;#010;Contributor is the Client ID of the original contributor&amp;#010;@return the value of contributor" />
+                   </header>
+                  </codeaccessormethod>
+                  <codeaccessormethod accessType="1" parent_id="67" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="67" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" text="Set the value of contributor&amp;#010;Contributor is the Client ID of the original contributor&amp;#010;@param value the value of contributor" />
+                   </header>
+                  </codeaccessormethod>
+                 </textblocks>
                 </hierarchicalcodeblock>
                </textblocks>
               </hierarchicalcodeblock>
@@ -1724,19 +1986,14 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
               <cppcodedocumentation tag="" indentLevel="1" text="Fields" />
              </header>
              <textblocks>
-              <ccfdeclarationcodeblock parent_id="40" tag="tblock_0" canDelete="false" indentLevel="1" text=" dataEntity evDEntity;" >
+              <ccfdeclarationcodeblock parent_id="40" tag="tblock_1" canDelete="false" indentLevel="1" text=" dataEntity evDEntity;" >
                <header>
                 <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
                </header>
               </ccfdeclarationcodeblock>
-              <ccfdeclarationcodeblock parent_id="65" tag="tblock_1" canDelete="false" indentLevel="1" text=" dataTick data;" >
+              <ccfdeclarationcodeblock parent_id="65" tag="tblock_2" canDelete="false" indentLevel="1" text=" dataTick data;" >
                <header>
                 <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
-               </header>
-              </ccfdeclarationcodeblock>
-              <ccfdeclarationcodeblock parent_id="67" tag="tblock_2" canDelete="false" indentLevel="1" text=" string contributor;" >
-               <header>
-                <cppcodedocumentation tag="" indentLevel="1" text="Contributor is the Client ID of the original contributor" />
                </header>
               </ccfdeclarationcodeblock>
              </textblocks>
@@ -1768,34 +2025,24 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
                   <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
                  </header>
                  <textblocks>
-                  <codeaccessormethod accessType="0" parent_id="40" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="40" >
+                  <codeaccessormethod accessType="0" parent_id="40" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="40" >
                    <header>
                     <cppcodedocumentation tag="" indentLevel="1" />
                    </header>
                   </codeaccessormethod>
-                  <codeaccessormethod accessType="1" parent_id="40" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="40" >
+                  <codeaccessormethod accessType="1" parent_id="40" tag="hblock_tag_5" canDelete="false" indentLevel="1" classfield_id="40" >
                    <header>
                     <cppcodedocumentation tag="" indentLevel="1" />
                    </header>
                   </codeaccessormethod>
-                  <codeaccessormethod accessType="0" parent_id="65" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="65" >
+                  <codeaccessormethod accessType="0" parent_id="65" tag="hblock_tag_6" canDelete="false" indentLevel="1" classfield_id="65" >
                    <header>
                     <cppcodedocumentation tag="" indentLevel="1" />
                    </header>
                   </codeaccessormethod>
-                  <codeaccessormethod accessType="1" parent_id="65" tag="hblock_tag_5" canDelete="false" indentLevel="1" classfield_id="65" >
+                  <codeaccessormethod accessType="1" parent_id="65" tag="hblock_tag_7" canDelete="false" indentLevel="1" classfield_id="65" >
                    <header>
                     <cppcodedocumentation tag="" indentLevel="1" />
-                   </header>
-                  </codeaccessormethod>
-                  <codeaccessormethod accessType="0" parent_id="67" tag="hblock_tag_6" canDelete="false" indentLevel="1" classfield_id="67" >
-                   <header>
-                    <cppcodedocumentation tag="" indentLevel="1" text="Get the value of contributor&amp;#010;Contributor is the Client ID of the original contributor&amp;#010;@return the value of contributor" />
-                   </header>
-                  </codeaccessormethod>
-                  <codeaccessormethod accessType="1" parent_id="67" tag="hblock_tag_7" canDelete="false" indentLevel="1" classfield_id="67" >
-                   <header>
-                    <cppcodedocumentation tag="" indentLevel="1" text="Set the value of contributor&amp;#010;Contributor is the Client ID of the original contributor&amp;#010;@param value the value of contributor" />
                    </header>
                   </codeaccessormethod>
                  </textblocks>
@@ -1823,24 +2070,24 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeblockwithcomments>
      </textblocks>
      <header>
-      <codecomment tag="" text="/**&amp;#010;&amp;#010;  dataevent.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;" />
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  dataevent.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
      </header>
      <classfields>
       <codeclassfield parent_id="40" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
        <header>
         <cppcodedocumentation tag="" />
        </header>
-       <ccfdeclarationcodeblock parent_id="40" tag="tblock_0" canDelete="false" indentLevel="1" text=" dataEntity evDEntity;" >
+       <ccfdeclarationcodeblock parent_id="40" tag="tblock_1" canDelete="false" indentLevel="1" text=" dataEntity evDEntity;" >
         <header>
          <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
         </header>
        </ccfdeclarationcodeblock>
-       <codeaccessormethod accessType="0" parent_id="40" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="40" >
+       <codeaccessormethod accessType="0" parent_id="40" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="40" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" />
         </header>
        </codeaccessormethod>
-       <codeaccessormethod accessType="1" parent_id="40" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="40" >
+       <codeaccessormethod accessType="1" parent_id="40" tag="hblock_tag_5" canDelete="false" indentLevel="1" classfield_id="40" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" />
         </header>
@@ -1850,17 +2097,17 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
        <header>
         <cppcodedocumentation tag="" />
        </header>
-       <ccfdeclarationcodeblock parent_id="65" tag="tblock_1" canDelete="false" indentLevel="1" text=" dataTick data;" >
+       <ccfdeclarationcodeblock parent_id="65" tag="tblock_2" canDelete="false" indentLevel="1" text=" dataTick data;" >
         <header>
          <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
         </header>
        </ccfdeclarationcodeblock>
-       <codeaccessormethod accessType="0" parent_id="65" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="65" >
+       <codeaccessormethod accessType="0" parent_id="65" tag="hblock_tag_6" canDelete="false" indentLevel="1" classfield_id="65" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" />
         </header>
        </codeaccessormethod>
-       <codeaccessormethod accessType="1" parent_id="65" tag="hblock_tag_5" canDelete="false" indentLevel="1" classfield_id="65" >
+       <codeaccessormethod accessType="1" parent_id="65" tag="hblock_tag_7" canDelete="false" indentLevel="1" classfield_id="65" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" />
         </header>
@@ -1870,17 +2117,17 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
        <header>
         <cppcodedocumentation tag="" text="Contributor is the Client ID of the original contributor" />
        </header>
-       <ccfdeclarationcodeblock parent_id="67" tag="tblock_2" canDelete="false" indentLevel="1" text=" string contributor;" >
+       <ccfdeclarationcodeblock parent_id="67" tag="tblock_0" canDelete="false" indentLevel="1" text=" yappiNode contributor;" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" text="Contributor is the Client ID of the original contributor" />
         </header>
        </ccfdeclarationcodeblock>
-       <codeaccessormethod accessType="0" parent_id="67" tag="hblock_tag_6" canDelete="false" indentLevel="1" classfield_id="67" >
+       <codeaccessormethod accessType="0" parent_id="67" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="67" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" text="Get the value of contributor&amp;#010;Contributor is the Client ID of the original contributor&amp;#010;@return the value of contributor" />
         </header>
        </codeaccessormethod>
-       <codeaccessormethod accessType="1" parent_id="67" tag="hblock_tag_7" canDelete="false" indentLevel="1" classfield_id="67" >
+       <codeaccessormethod accessType="1" parent_id="67" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="67" >
         <header>
          <cppcodedocumentation tag="" indentLevel="1" text="Set the value of contributor&amp;#010;Contributor is the Client ID of the original contributor&amp;#010;@param value the value of contributor" />
         </header>
@@ -2137,7 +2384,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeblockwithcomments>
      </textblocks>
      <header>
-      <codecomment tag="" text="/**&amp;#010;&amp;#010;  dataentity.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;" />
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  dataentity.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
      </header>
      <classfields>
       <codeclassfield parent_id="36" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
@@ -2483,7 +2730,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeblockwithcomments>
      </textblocks>
      <header>
-      <codecomment tag="" text="/**&amp;#010;&amp;#010;  datatick.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;" />
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  datatick.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
      </header>
      <classfields>
       <codeclassfield parent_id="50" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
@@ -2864,7 +3111,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeblockwithcomments>
      </textblocks>
      <header>
-      <codecomment tag="" text="/**&amp;#010;&amp;#010;  datatype.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;" />
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  datatype.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
      </header>
      <classfields>
       <codeclassfield parent_id="53" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
@@ -3209,7 +3456,7 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
       </codeblockwithcomments>
      </textblocks>
      <header>
-      <codecomment tag="" text="/**&amp;#010;&amp;#010;  datastream.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;" />
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  datastream.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
      </header>
      <classfields>
       <codeclassfield parent_id="85" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
@@ -3253,6 +3500,491 @@ if there are subscribers." isSpecification="false" isLeaf="false" visibility="pu
        </codeaccessormethod>
       </codeclassfield>
      </classfields>
+    </classifiercodedocument>
+    <classifiercodedocument writeOutCode="true" package="" id="cppheader184" parent_class="184" fileExt=".h" fileName="yappiconnection" >
+     <textblocks>
+      <codeblockwithcomments tag="hashDefBlock" text="#ifndef YAPPICONNECTION_H&amp;#010;#define YAPPICONNECTION_H" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <codeblockwithcomments tag="includes" text="#include &lt;string>&amp;#010;" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <codeblockwithcomments tag="using" writeOutText="false" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <hierarchicalcodeblock tag="namespace" canDelete="false" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" text="Namespace" />
+       </header>
+       <textblocks>
+        <codeblockwithcomments tag="enums" writeOutText="false" >
+         <header>
+          <cppcodedocumentation tag="" writeOutText="false" />
+         </header>
+        </codeblockwithcomments>
+        <cppheaderclassdeclarationblock parent_id="184" tag="classDeclarationBlock" canDelete="false" >
+         <header>
+          <cppcodedocumentation tag="" writeOutText="false" text="Class yappiConnection&amp;#010;" />
+         </header>
+         <textblocks>
+          <hierarchicalcodeblock tag="publicBlock" canDelete="false" >
+           <header>
+            <cppcodedocumentation tag="" text="Public stuff" />
+           </header>
+           <textblocks>
+            <hierarchicalcodeblock tag="publicFieldsDecl" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" indentLevel="1" text="Fields" />
+             </header>
+             <textblocks/>
+            </hierarchicalcodeblock>
+            <hierarchicalcodeblock tag="pubMethodsBlock" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" indentLevel="1" />
+             </header>
+             <textblocks>
+              <hierarchicalcodeblock tag="constructionMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Constructors" />
+               </header>
+               <textblocks>
+                <codeblockwithcomments tag="emptyconstructor" indentLevel="1" text="yappiConnection ( ) { }" >
+                 <header>
+                  <cppcodedocumentation tag="" indentLevel="1" text="Empty Constructor" />
+                 </header>
+                </codeblockwithcomments>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="accessorMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Accessor Methods" />
+               </header>
+               <textblocks>
+                <hierarchicalcodeblock tag="pubStaticAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+                <hierarchicalcodeblock tag="pubRegularAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="operationMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Operations" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+             </textblocks>
+            </hierarchicalcodeblock>
+           </textblocks>
+          </hierarchicalcodeblock>
+          <hierarchicalcodeblock tag="protectedBlock" canDelete="false" >
+           <header>
+            <cppcodedocumentation tag="" text="Protected stuff" />
+           </header>
+           <textblocks>
+            <hierarchicalcodeblock tag="protectedFieldsDecl" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" indentLevel="1" text="Fields" />
+             </header>
+             <textblocks>
+              <ccfdeclarationcodeblock parent_id="204" tag="tblock_0" canDelete="false" indentLevel="1" text=" string remoteNode;" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Contains the IP address of the remote node" />
+               </header>
+              </ccfdeclarationcodeblock>
+              <ccfdeclarationcodeblock parent_id="211" tag="tblock_1" canDelete="false" indentLevel="1" text=" int status;" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown" />
+               </header>
+              </ccfdeclarationcodeblock>
+             </textblocks>
+            </hierarchicalcodeblock>
+            <hierarchicalcodeblock tag="protMethodsBlock" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" indentLevel="1" />
+             </header>
+             <textblocks>
+              <hierarchicalcodeblock tag="constructionMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Constructors" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="accessorMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Accessor Methods" />
+               </header>
+               <textblocks>
+                <hierarchicalcodeblock tag="protStaticAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+                <hierarchicalcodeblock tag="protRegularAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks>
+                  <codeaccessormethod accessType="0" parent_id="204" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="204" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" text="Get the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@return the value of remoteNode" />
+                   </header>
+                  </codeaccessormethod>
+                  <codeaccessormethod accessType="1" parent_id="204" tag="hblock_tag_2" canDelete="false" indentLevel="1" classfield_id="204" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" text="Set the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@param value the value of remoteNode" />
+                   </header>
+                  </codeaccessormethod>
+                  <codeaccessormethod accessType="0" parent_id="211" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="211" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" text="Get the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@return the value of status" />
+                   </header>
+                  </codeaccessormethod>
+                  <codeaccessormethod accessType="1" parent_id="211" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="211" >
+                   <header>
+                    <cppcodedocumentation tag="" indentLevel="1" text="Set the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@param value the value of status" />
+                   </header>
+                  </codeaccessormethod>
+                 </textblocks>
+                </hierarchicalcodeblock>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="operationMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Operations" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+             </textblocks>
+            </hierarchicalcodeblock>
+           </textblocks>
+          </hierarchicalcodeblock>
+          <hierarchicalcodeblock tag="privateBlock" canDelete="false" >
+           <header>
+            <cppcodedocumentation tag="" text="Private stuff" />
+           </header>
+           <textblocks>
+            <hierarchicalcodeblock tag="privateFieldsDecl" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" indentLevel="1" text="Fields" />
+             </header>
+             <textblocks/>
+            </hierarchicalcodeblock>
+            <hierarchicalcodeblock tag="privMethodsBlock" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" indentLevel="1" />
+             </header>
+             <textblocks>
+              <hierarchicalcodeblock tag="constructionMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Constructors" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="accessorMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Accessor Methods" />
+               </header>
+               <textblocks>
+                <hierarchicalcodeblock tag="privStaticAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+                <hierarchicalcodeblock tag="privRegularAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="operationMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Operations" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+             </textblocks>
+            </hierarchicalcodeblock>
+           </textblocks>
+          </hierarchicalcodeblock>
+         </textblocks>
+        </cppheaderclassdeclarationblock>
+       </textblocks>
+      </hierarchicalcodeblock>
+      <codeblockwithcomments tag="hashDefBlockEnd" text="#endif //YAPPICONNECTION_H" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+     </textblocks>
+     <header>
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappiconnection.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
+     </header>
+     <classfields>
+      <codeclassfield parent_id="204" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
+       <header>
+        <cppcodedocumentation tag="" text="Contains the IP address of the remote node" />
+       </header>
+       <ccfdeclarationcodeblock parent_id="204" tag="tblock_0" canDelete="false" indentLevel="1" text=" string remoteNode;" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" text="Contains the IP address of the remote node" />
+        </header>
+       </ccfdeclarationcodeblock>
+       <codeaccessormethod accessType="0" parent_id="204" tag="hblock_tag_0" canDelete="false" indentLevel="1" classfield_id="204" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" text="Get the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@return the value of remoteNode" />
+        </header>
+       </codeaccessormethod>
+       <codeaccessormethod accessType="1" parent_id="204" tag="hblock_tag_2" canDelete="false" indentLevel="1" classfield_id="204" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" text="Set the value of remoteNode&amp;#010;Contains the IP address of the remote node&amp;#010;@param value the value of remoteNode" />
+        </header>
+       </codeaccessormethod>
+      </codeclassfield>
+      <codeclassfield parent_id="211" field_type="0" initialValue="" role_id="-1" writeOutMethods="true" listClassName="" >
+       <header>
+        <cppcodedocumentation tag="" text="Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown" />
+       </header>
+       <ccfdeclarationcodeblock parent_id="211" tag="tblock_1" canDelete="false" indentLevel="1" text=" int status;" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" text="Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown" />
+        </header>
+       </ccfdeclarationcodeblock>
+       <codeaccessormethod accessType="0" parent_id="211" tag="hblock_tag_3" canDelete="false" indentLevel="1" classfield_id="211" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" text="Get the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@return the value of status" />
+        </header>
+       </codeaccessormethod>
+       <codeaccessormethod accessType="1" parent_id="211" tag="hblock_tag_4" canDelete="false" indentLevel="1" classfield_id="211" >
+        <header>
+         <cppcodedocumentation tag="" indentLevel="1" text="Set the value of status&amp;#010;Indicates possible status:&amp;#010;1. Active&amp;#010;2. Stale&amp;#010;3. Resetting&amp;#010;4. Unknown&amp;#010;@param value the value of status" />
+        </header>
+       </codeaccessormethod>
+      </codeclassfield>
+     </classfields>
+    </classifiercodedocument>
+    <classifiercodedocument writeOutCode="true" package="" id="cppheader240" parent_class="240" fileExt=".h" fileName="yappinode" >
+     <textblocks>
+      <codeblockwithcomments tag="hashDefBlock" text="#ifndef YAPPINODE_H&amp;#010;#define YAPPINODE_H" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <codeblockwithcomments tag="includes" text="#include &lt;string>&amp;#010;" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <codeblockwithcomments tag="using" writeOutText="false" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+      <hierarchicalcodeblock tag="namespace" canDelete="false" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" text="Namespace" />
+       </header>
+       <textblocks>
+        <codeblockwithcomments tag="enums" writeOutText="false" >
+         <header>
+          <cppcodedocumentation tag="" writeOutText="false" />
+         </header>
+        </codeblockwithcomments>
+        <cppheaderclassdeclarationblock parent_id="240" tag="classDeclarationBlock" canDelete="false" >
+         <header>
+          <cppcodedocumentation tag="" writeOutText="false" text="Class yappiNode&amp;#010;" />
+         </header>
+         <textblocks>
+          <hierarchicalcodeblock tag="publicBlock" canDelete="false" >
+           <header>
+            <cppcodedocumentation tag="" text="Public stuff" />
+           </header>
+           <textblocks>
+            <hierarchicalcodeblock tag="publicFieldsDecl" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Fields" />
+             </header>
+             <textblocks/>
+            </hierarchicalcodeblock>
+            <hierarchicalcodeblock tag="pubMethodsBlock" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+             </header>
+             <textblocks>
+              <hierarchicalcodeblock tag="constructionMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Constructors" />
+               </header>
+               <textblocks>
+                <codeblockwithcomments tag="emptyconstructor" indentLevel="1" text="yappiNode ( ) { }" >
+                 <header>
+                  <cppcodedocumentation tag="" indentLevel="1" text="Empty Constructor" />
+                 </header>
+                </codeblockwithcomments>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="accessorMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Accessor Methods" />
+               </header>
+               <textblocks>
+                <hierarchicalcodeblock tag="pubStaticAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+                <hierarchicalcodeblock tag="pubRegularAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="operationMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Operations" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+             </textblocks>
+            </hierarchicalcodeblock>
+           </textblocks>
+          </hierarchicalcodeblock>
+          <hierarchicalcodeblock tag="protectedBlock" canDelete="false" >
+           <header>
+            <cppcodedocumentation tag="" text="Protected stuff" />
+           </header>
+           <textblocks>
+            <hierarchicalcodeblock tag="protectedFieldsDecl" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Fields" />
+             </header>
+             <textblocks/>
+            </hierarchicalcodeblock>
+            <hierarchicalcodeblock tag="protMethodsBlock" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+             </header>
+             <textblocks>
+              <hierarchicalcodeblock tag="constructionMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Constructors" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="accessorMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Accessor Methods" />
+               </header>
+               <textblocks>
+                <hierarchicalcodeblock tag="protStaticAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+                <hierarchicalcodeblock tag="protRegularAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="operationMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Operations" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+             </textblocks>
+            </hierarchicalcodeblock>
+           </textblocks>
+          </hierarchicalcodeblock>
+          <hierarchicalcodeblock tag="privateBlock" canDelete="false" >
+           <header>
+            <cppcodedocumentation tag="" text="Private stuff" />
+           </header>
+           <textblocks>
+            <hierarchicalcodeblock tag="privateFieldsDecl" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Fields" />
+             </header>
+             <textblocks/>
+            </hierarchicalcodeblock>
+            <hierarchicalcodeblock tag="privMethodsBlock" canDelete="false" indentLevel="1" >
+             <header>
+              <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+             </header>
+             <textblocks>
+              <hierarchicalcodeblock tag="constructionMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" indentLevel="1" text="Constructors" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="accessorMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Accessor Methods" />
+               </header>
+               <textblocks>
+                <hierarchicalcodeblock tag="privStaticAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+                <hierarchicalcodeblock tag="privRegularAccessorMethods" canDelete="false" indentLevel="1" >
+                 <header>
+                  <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" />
+                 </header>
+                 <textblocks/>
+                </hierarchicalcodeblock>
+               </textblocks>
+              </hierarchicalcodeblock>
+              <hierarchicalcodeblock tag="operationMethods" canDelete="false" indentLevel="1" >
+               <header>
+                <cppcodedocumentation tag="" writeOutText="false" indentLevel="1" text="Operations" />
+               </header>
+               <textblocks/>
+              </hierarchicalcodeblock>
+             </textblocks>
+            </hierarchicalcodeblock>
+           </textblocks>
+          </hierarchicalcodeblock>
+         </textblocks>
+        </cppheaderclassdeclarationblock>
+       </textblocks>
+      </hierarchicalcodeblock>
+      <codeblockwithcomments tag="hashDefBlockEnd" text="#endif //YAPPINODE_H" >
+       <header>
+        <cppcodedocumentation tag="" writeOutText="false" />
+       </header>
+      </codeblockwithcomments>
+     </textblocks>
+     <header>
+      <codecomment tag="" text="/**&amp;#010;&amp;#010;  yappinode.h - Copyright enrique&amp;#010;&amp;#010;  YAPPI is free software; you can redistribute it and/or modify&amp;#010;  it under the terms of the GNU General Public License as published&amp;#010;  by the Free Software Foundation; either version 2, or (at your&amp;#010;  option) any later version.&amp;#010;&amp;#010;  YAPPI is distributed in the hope that it will be useful, but&amp;#010;  WITHOUT ANY WARRANTY; without even the implied warranty of&amp;#010;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU&amp;#010;  General Public License for more details.&amp;#010;&amp;#010;  You should have received a copy of the GNU General Public License&amp;#010;  along with YAPPI; see the file COPYING.  If not, write to the&amp;#010;  Free Software Foundation, Inc., 59 Temple Place - Suite 330,&amp;#010;  Boston, MA 02111-1307, USA.&amp;#010; &amp;#010;**/&amp;#010;&amp;#010;using namespace std;&amp;#010;" />
+     </header>
+     <classfields/>
     </classifiercodedocument>
    </codegenerator>
   </codegeneration>

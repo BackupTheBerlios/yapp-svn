@@ -1,6 +1,6 @@
 /**
 
-  yappiclient.cpp - Copyright enrique
+  yappiconnection.cpp - Copyright enrique
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -19,7 +19,7 @@
 
 **/
 
-#include "yappiclient.h"
+#include "yappiconnection.h"
 
 /**
  * Constructors/Destructors
@@ -28,42 +28,43 @@
  * Methods
  */
 /**
- * Declare a new stream of data.
- * This should then be notified to the network if we want
- * to make it available to others.
+ * Get the value of remoteNode
+ * Contains the IP address of the remote node
+ * @return the value of remoteNode
  */
-dataStream yappiClient::dataPublish (dataType dtType, string code) {
+string yappiConnection::get_remoteNode ( ) {
   
 }
 /**
- * Used to publish data events. dataPublish allows to 
- * declare a new stream, dataUpdate puts data in the stream.
+ * Set the value of remoteNode
+ * Contains the IP address of the remote node
+ * @param value the value of remoteNode
  */
- yappiClient::dataUpdate (dataTick tick, dataStream dtStream) {
+void yappiConnection::set_remoteNode (string value ) {
   
 }
 /**
- * 
+ * Get the value of status
+ * Indicates possible status:
+ * 1. Active
+ * 2. Stale
+ * 3. Resetting
+ * 4. Unknown
+ * @return the value of status
  */
-string yappiClient::get_id ( ) {
+int yappiConnection::get_status ( ) {
   
 }
 /**
- * 
+ * Set the value of status
+ * Indicates possible status:
+ * 1. Active
+ * 2. Stale
+ * 3. Resetting
+ * 4. Unknown
+ * @param value the value of status
  */
-void yappiClient::set_id (string value ) {
-  
-}
-/**
- * 
- */
-int yappiClient::get_connectStatus ( ) {
-  
-}
-/**
- * 
- */
-void yappiClient::set_connectStatus (int value ) {
+void yappiConnection::set_status (int value ) {
   
 }
 

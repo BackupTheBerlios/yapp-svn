@@ -1,6 +1,6 @@
 /**
 
-  yappiclient.h - Copyright enrique
+  yappiconnection.h - Copyright enrique
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -21,15 +21,11 @@
 
 using namespace std;
 
-#ifndef YAPPICLIENT_H
-#define YAPPICLIENT_H
+#ifndef YAPPICONNECTION_H
+#define YAPPICONNECTION_H
 #include <string>
-#include "yappinode.h"
-#include "datastream.h"
-#include "datatype.h"
-#include "datatick.h"
 
-class yappiClient {
+class yappiConnection {
 /**
  * Public stuff
  */
@@ -46,28 +42,10 @@ public:
   /**
    * Empty Constructor
    */
-  yappiClient ( ) { }
+  yappiConnection ( ) { }
   /**
    * Accessor Methods
    */
-  /**
-   * Operations
-   */
-  /**
-   * Declare a new stream of data.
-   * This should then be notified to the network if we want
-   * to make it available to others.
-   */
-  dataStream  dataPublish (dataType dtType, string code);
-    
-  
-  /**
-   * Used to publish data events. dataPublish allows to 
-   * declare a new stream, dataUpdate puts data in the stream.
-   */
-    dataUpdate (dataTick tick, dataStream dtStream);
-    
-  
 /**
  * Protected stuff
  */
@@ -75,8 +53,18 @@ protected:
   /**
    * Fields
    */
-   string id;
-   int connectStatus;
+  /**
+   * Contains the IP address of the remote node
+   */
+   string remoteNode;
+  /**
+   * Indicates possible status:
+   * 1. Active
+   * 2. Stale
+   * 3. Resetting
+   * 4. Unknown
+   */
+   int status;
   /**
    * 
    */
@@ -87,32 +75,45 @@ protected:
    * Accessor Methods
    */
   /**
-   * 
+   * Get the value of remoteNode
+   * Contains the IP address of the remote node
+   * @return the value of remoteNode
    */
-  string get_id ( );
+  string get_remoteNode ( );
     
   
   /**
-   * 
+   * Set the value of remoteNode
+   * Contains the IP address of the remote node
+   * @param value the value of remoteNode
    */
-  void set_id (string value );
+  void set_remoteNode (string value );
     
   
   /**
-   * 
+   * Get the value of status
+   * Indicates possible status:
+   * 1. Active
+   * 2. Stale
+   * 3. Resetting
+   * 4. Unknown
+   * @return the value of status
    */
-  int get_connectStatus ( );
+  int get_status ( );
     
   
   /**
-   * 
+   * Set the value of status
+   * Indicates possible status:
+   * 1. Active
+   * 2. Stale
+   * 3. Resetting
+   * 4. Unknown
+   * @param value the value of status
    */
-  void set_connectStatus (int value );
+  void set_status (int value );
     
   
-  /**
-   * Operations
-   */
 /**
  * Private stuff
  */
@@ -129,9 +130,6 @@ private:
   /**
    * Accessor Methods
    */
-  /**
-   * Operations
-   */
 };
-#endif //YAPPICLIENT_H
+#endif //YAPPICONNECTION_H
 

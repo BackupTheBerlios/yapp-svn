@@ -52,25 +52,25 @@ public:
   /**
    * 
    */
-  void  listenConnection ();
+    listenConnection ();
     
   
   /**
    * 
    */
-  void  localSearch ();
+    localSearch ();
     
   
   /**
    * 
    */
-  void  forwardSearch ();
+    forwardSearch ();
     
   
   /**
    * 
    */
-  void  newData ();
+    newData ();
     
   
 /**
