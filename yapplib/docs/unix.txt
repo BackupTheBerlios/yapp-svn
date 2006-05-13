@@ -1,0 +1,43 @@
+HOW TO COMPILE YAPPI ON UNIX like OS 
+BY USING GNU COMPILER
+====================================
+
+Prerequisite
+============
+BakeFile - http://bakefile.sourceforge.net/index.php
+	A cross-platform (compiler) makefile generator.
+
+wxWidgets - http://www.wxwidgets.org/
+        A open source C++ GUI framework.
+
+Setting up prerequisite software
+================================
+   $ mkdir /tmp/bakefile0.2.0
+   $ cd /tmp/bakefile0.2.0
+   $ wget http://switch.dl.sourceforge.net/sourceforge/bakefile/bakefile-0.2.0.tar.gz
+   $ tar xvzf bakefile-0.2.0.tar.gz
+   $ cd bakefile-0.2.0 
+   $ ./configure
+   $ make
+   $ sudo make install
+
+   $ mkdir /tmp/wxwidget2.6.3
+   $ cd /tmp/wxwidget2.6.3
+   $ wget http://switch.dl.sourceforge.net/sourceforge/wxwindows/wxGTK-2.6.3.tar.gz
+   $ tar xvzf wxGTK-2.6.3.tar.gz
+   $ cd wxGTK-2.6.3
+   $  mkdir build_gtk
+   $ cd build_gtk
+   $ ../configure --with-gtk=2
+   $ make
+   $ sudo ake install
+   $ sudo /sbin/ldconfig
+
+Compile the core library
+========================
+   $ bakefile -f autoconf -o ./Makefile.in build/yappi.bkl
+   $ aclocal -I /usr/local/share/aclocal/
+   $ autoconf
+   $ ./configure
+   $ make
+   $ make install

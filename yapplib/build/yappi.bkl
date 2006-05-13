@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<makefile>
+
+    <set var="YAPPI_CORE_SRC" hints="files">
+       datatype.cpp
+       dataentity.cpp
+       dataTick.cpp
+       dataevent.cpp
+       datastream.cpp
+       yappiclient.cpp
+       yappiServer.cpp
+       yappiConnection.cpp
+       yappinode.cpp
+    </set>
+
+    <if cond="FORMAT!='autoconf'">
+        <set var="BUILDDIR">./</set>
+    </if>
+
+    <template id="pchbase">
+        <precomp-headers>on</precomp-headers>
+        <precomp-headers-file>yappi_pch</precomp-headers-file>
+        <precomp-headers-gen>$(YAPPI_CORE_SRC)</precomp-headers-gen>
+        <precomp-headers-header>yappi_prec.h</precomp-headers-header> 
+    </template>
+    
+    <lib id="yappi" template_append="pchbase">
+        <dirname>.</dirname>
+        <include>$(SRCDIR)</include>
+        <sources>$(YAPPI_CORE_SRC)</sources>
+        <dirname>.</dirname>
+    </lib>
+
+</makefile>

@@ -19,6 +19,8 @@
 
 **/
 
+#include "yappi_prec.h"
+
 #include "yappiconnection.h"
 
 /**

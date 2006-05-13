@@ -1,0 +1,38 @@
+HOW TO COMPILE YAPPI ON MS WINDOWS 
+BY USING MINGW32 + MSYS
+==================================
+
+Prerequisite
+============
+BakeFile - http://bakefile.sourceforge.net/index.php
+	A cross-platform (compiler) makefile generator.
+
+wxWidgets - http://www.wxwidgets.org/
+        A open source C++ GUI framework.
+
+MinGW32 - http://www.mingw.org/
+	A collection of freely available and freely distributable Windows specific header files and import libraries combined with GNU toolsets that allow one to produce native Windows programs that do not rely on any 3rd-party C runtime DLLs.
+
+MSYS - http://www.mingw.org/
+	A Minimal SYStem to provide POSIX/Bourne configure scripts the ability to execute and create a Makefile used by make.
+
+Setting up prerequisite software
+================================
+$wget http://switch.dl.sourceforge.net/sourceforge/bakefile/bakefile-0.2.0.tar.gz
+$wget http://switch.dl.sourceforge.net/sourceforge/wxwindows/wxWidgets-2.6.3.tar.gz
+
+Compile
+=======
+
+[Linux][GNU Compiler]
+$bakefile -f autoconf -o ./Makefile.in yappi.bkl 
+$autoconf
+$./configure
+$make
+$make install
+
+[MS Windows][MinGW32]
+>bakefile -f mingw -o ./Makefile.gcc yappi.bkl
+>mingw32-make -f Makefile.gcc
+
+

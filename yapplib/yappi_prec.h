@@ -1,6 +1,6 @@
 /**
 
-  datatype.cpp - Copyright enrique
+  datatick.h - Copyright Yappi
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -19,50 +19,14 @@
 
 **/
 
-#include "yappi_prec.h"
 
+#include "datatick.h"
+#include "dataentity.h"
 #include "datatype.h"
-
-/**
- * Constructors/Destructors
- */
-/**
- * Methods
- */
-/**
- * 
- */
-string dataType::get_type ( ) {
-  
-}
-/**
- * 
- */
-void dataType::set_type (string value ) {
-  
-}
-/**
- * 
- */
-string dataType::get_description ( ) {
-  
-}
-/**
- * 
- */
-void dataType::set_description (string value ) {
-  
-}
-/**
- * 
- */
-string dataType::get_dtemplate ( ) {
-  
-}
-/**
- * 
- */
-void dataType::set_dtemplate (string value ) {
-  
-}
+#include "dataevent.h"
+#include "datastream.h"
+#include "yappinode.h"
+#include "yappiclient.h"
+#include "yappiserver.h"
+#include "yappiconnection.h"
 
