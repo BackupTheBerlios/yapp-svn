@@ -65,7 +65,7 @@ public:
    * Used to publish data events. dataPublish allows to 
    * declare a new stream, dataUpdate puts data in the stream.
    */
-    dataUpdate (dataTick tick, dataStream dtStream);
+  void dataUpdate (dataTick tick, dataStream dtStream);
     
   
 /**

@@ -30,7 +30,7 @@ Setting up prerequisite software
    $ cd build_gtk
    $ ../configure --with-gtk=2
    $ make
-   $ sudo ake install
+   $ sudo make install
    $ sudo /sbin/ldconfig
 
 Compile the core library
