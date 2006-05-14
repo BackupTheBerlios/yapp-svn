@@ -4,14 +4,16 @@
     <set var="YAPPI_CORE_SRC" hints="files">
        datatype.cpp
        dataentity.cpp
-       dataTick.cpp
+       datatick.cpp
        dataevent.cpp
        datastream.cpp
        yappiclient.cpp
-       yappiServer.cpp
-       yappiConnection.cpp
+       yappiserver.cpp
+       yappiconnection.cpp
        yappinode.cpp
     </set>
+
+    <set var="SRCDIR">..</set>
 
     <if cond="FORMAT!='autoconf'">
         <set var="BUILDDIR">./</set>
@@ -25,7 +27,7 @@
     </template>
     
     <lib id="yappi" template_append="pchbase">
-        <dirname>.</dirname>
+        <dirname>..</dirname>
         <include>$(SRCDIR)</include>
         <sources>$(YAPPI_CORE_SRC)</sources>
         <dirname>.</dirname>
