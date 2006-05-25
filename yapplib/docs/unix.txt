@@ -26,7 +26,7 @@ Setting up prerequisite software
    $ wget http://switch.dl.sourceforge.net/sourceforge/wxwindows/wxGTK-2.6.3.tar.gz
    $ tar xvzf wxGTK-2.6.3.tar.gz
    $ cd wxGTK-2.6.3
-   $  mkdir build_gtk
+   $ mkdir build_gtk
    $ cd build_gtk
    $ ../configure --with-gtk=2
    $ make
