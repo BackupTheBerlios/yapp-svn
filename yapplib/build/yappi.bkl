@@ -47,6 +47,11 @@
 
    <include file="presets/wx.bkl"/>
 
+   <set var="BUILDDIR">
+       <if cond="TOOLSET=='win32'">build-$(COMPILER)</if>
+       <if cond="TOOLSET!='win32'">.</if>
+   </set>
+
    <exe id="yappitest" template="wx">
        <app-type>gui</app-type>
        
