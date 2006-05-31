@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<!-- SVN-ID: $Id$ -->
+
+<bakefile-gen>
+
+    <input>yappi.bkl</input>
+
+    <disable-formats>dmars,dmars_smake,cbx_unix,cbuilderx,msevc4prj</disable-formats>
+    <add-formats>autoconf,borland,dmars_smake,dmars,mingw,msvc,msvc6prj,msevc4prj,watcom,cbuilderx,cbx_unix</add-formats>
+    
+</bakefile-gen>

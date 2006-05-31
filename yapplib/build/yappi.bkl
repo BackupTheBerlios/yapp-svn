@@ -1,5 +1,11 @@
 <?xml version="1.0" ?>
+<!-- SVN-ID: $Id$ -->
+
 <makefile>
+
+   <!-- The Yappi core library section -->
+
+ <!-- TODO: the library section need to be completed
 
     <set var="YAPPI_CORE_SRC" hints="files">
        datatype.cpp
@@ -32,5 +38,24 @@
         <sources>$(YAPPI_CORE_SRC)</sources>
         <dirname>.</dirname>
     </lib>
+
+ -->
+
+   <-- The Yappi library sample section -->
+
+   <include file="presets/wx.bkl"/>
+
+   <exe id="yappitest" template="wx">
+       <app-type>gui</app-type>
+       
+       <dirname>../samples/release</dirname> <!-- TODO: To find the way to create output directory and to put object files in another directory -->
+	
+       <sources>../samples/yappitest.cpp</sources>
+
+       <wx-lib>core</wx-lib>
+       <wx-lib>net</wx-lib>
+       <wx-lib>base</wx-lib>
+       <!-- TODO: to create a resource file : <win32-res>yappitest.rc</win32-res> -->
+   </exe>
 
 </makefile>
