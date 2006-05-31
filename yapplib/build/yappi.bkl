@@ -41,7 +41,7 @@
 
  -->
 
-   <-- The Yappi library sample section -->
+   <!-- The Yappi library sample section -->
 
    <include file="presets/wx.bkl"/>
 
