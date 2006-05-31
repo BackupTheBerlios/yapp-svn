@@ -35,7 +35,8 @@ Setting up prerequisite software
 
 Compile the core library
 ========================
-   $ bakefile -f autoconf -o ./Makefile.in build/yappi.bkl
+   $ cd [Yappi directory]/build/
+   $ bafefile_gen -f autoconf
    $ aclocal -I /usr/local/share/aclocal/
    $ autoconf
    $ ./configure
