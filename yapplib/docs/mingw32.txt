@@ -15,21 +15,67 @@ MinGW32 - http://www.mingw.org/
 
 Setting up prerequisite software
 ================================
-Download & Install: http://switch.dl.sourceforge.net/sourceforge/bakefile/bakefile-0.2.0-setup.exe
-Download & Install: http://switch.dl.sourceforge.net/sourceforge/wxwindows/wxMSW-2.6.3-Setup-1.exe
+[MinGW]     Download: http://prdownloads.sourceforge.net/mingw/MinGW-5.0.2.exe?download  [129.00KB + 16.50MB(Download during installation)]
+[BakeFile]  Download: http://prdownloads.sourceforge.net/bakefile/bakefile-0.2.0-setup.exe?download  [2.45MB]
+[wxWidgets] Download: http://prdownloads.sourceforge.net/wxwindows/wxMSW-2.6.3-Setup-1.exe?download [17.50MB]
 
-Compile
-=======
+MinGW Installation
+==================
+1. Execute the "MinGW-5.0.2.exe"
+2. Click "Next"
+3. Select the Country for downloading packages and select "Download as needed and install". Then click "Next"
+4. Select "Current". Then click "Next"
+5. Select "g++ compiler" and "MinGW Make". And make sure that the "MinGW base tools" option is selected". Then click "Next"
+6. Put the target directory. It requires about 70.2MB. ###Note: I recommend to use "C:\MinGW" even if it will mess your directory structure###. Then click "Next"
+7. Put the program name displaying in the Start menu. Then click "Next"
+8. Wait for downloading and extraction. When it finishes, click "Next"
+9. Click "Finish"
+10. Add ";C:\MinGW\bin;C:\MinGW\mingw32\bin"  at the end of the "PATH" environment variable. ###Note: [My Computer]->[Properties]->[Advanced]->[Environment Variables]###
 
-[Linux][GNU Compiler]
-$bakefile -f autoconf -o ./Makefile.in yappi.bkl 
-$autoconf
-$./configure
-$make
-$make install
+BakeFile Installation
+=====================
+1. Execute the "bakefile-0.2.0-setup.exe"
+2. Click "Next"
+3. Select "I accept the agreement" and then click "Next"
+4. Put the target directory. Then click "Next"
+5. Select componects and then click "Next"
+6. Make that the "Add Bakefile to PATH environment variable" option is selected. Then click "Next"
+7. Wait for installation
+8. Click "Finish"
+
+wxWidget Installation
+=====================
+1. Execute the "wxMSW-2.6.3-Setup-1.exe"
+2. Click "Yes"
+3. Click "Next"
+4. Select "I accept the agreement" and then click "Next"
+5. Click "Next"
+6. Put the target directory. It requires about 94.2MB. Then click "Next"
+7. Put the program name displaying in the Start menu. Then click "Next"
+8. Click "Install"
+9. Wait for installation
+10. Click "Next"
+11. Click "Finish"
+
+How to compile the wxWidgets (the compilation needs to be done before using the library)
+============================
+1. Open the Command line prompt [Start]->[Run...] then open "cmd.exe"
+2. cd c:\wxWidgets-2.6.3\build\msw
+3. mingw32-make -f makefile.gcc
+
+###Note: to read more details about the wxWidgets compilation on Windows, please read at the "C:\wxWidgets-2.6.3\docs\msw\install.txt"###
+
+How to compile Yappi Library
+============================
+<<<<<< TODO >>>>>
 
 [MS Windows][MinGW32]
 >bakefile -f mingw -o ./Makefile.gcc yappi.bkl
 >mingw32-make -f Makefile.gcc
 
+<<<<<<end samply>>>>>>
 
+How to compiler a Yappi sample
+==============================
+
+<<<<<<<TODO>>>>>>
