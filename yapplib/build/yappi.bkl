@@ -3,6 +3,8 @@
 
 <makefile>
 
+   <requires version="0.2.0"/>
+
    <!-- The Yappi core library section -->
 
  <!-- TODO: the library section need to be completed
