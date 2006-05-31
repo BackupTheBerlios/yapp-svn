@@ -1,3 +1,9 @@
+# -------------------------------------------------------------
+# A very first Yappi's "configure.ac" file
+# 
+# SVN-ID: $Id$
+# -------------------------------------------------------------
+
 AC_PREREQ(2.59)
 AC_INIT(aclocal.m4)
 AC_CANONICAL_SYSTEM
