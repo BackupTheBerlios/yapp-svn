@@ -1,0 +1,69 @@
+HOW TO COMPILE YAPPI ON MICROSOFT WINDOWS 
+BY USING WXDEV-CPP (MINGW32)
+=========================================
+SVN-ID: $Id$
+
+Prerequisite
+============
+BakeFile - http://bakefile.sourceforge.net/index.php
+	A cross-platform (compiler) open source makefile generator. (a subset of the Automake tool)
+
+wxWidgets - http://www.wxwidgets.org/
+        A cross-platform open source C++ GUI framework.
+
+MinGW32 - http://www.mingw.org/
+	A collection of freely available and freely distributable Windows specific header files and import libraries combined with GNU toolsets 
+        that allow one to produce native Windows programs that do not rely on any 3rd-party C runtime DLLs.
+
+wxDev-Cpp - http://wxdsgn.sourceforge.net/
+        wx-Devcpp is an extension of DevC++ by Colin Laplace Et.al. This program helps you to create Dialogs and Frames for wxWidgets visually.
+	With all the good features of dev-cpp, wx-DevCpp hosts a wxWidgets form designer with the latest wx library. The main intension of this 
+	program is to fill the gap of the non-availability of a free, open-source, commercial-grade IDE/RAD for development with wxWidgets.
+
+Dev-C++ - http://bloodshed.net/dev/index.html
+        Bloodshed Dev-C++ is a full-featured Integrated Development Environment (IDE) for the C/C++ programming language. It uses Mingw port of 
+	GCC (GNU Compiler Collection) as its compiler. It creates native Win32 executables, either console or GUI. Dev-C++ can also be used in 
+	combination with Cygwin. 
+
+Setting up prerequisite software
+================================
+[wxDev-Cpp] Download: http://prdownloads.sourceforge.net/wxdsgn/wx-devcpp-6.9beta_setup.exe?download  [28.70MB (including Dev-C++, wxDev-Cpp, wxWidgets and MinGW32)]
+[BakeFile]  Download: http://prdownloads.sourceforge.net/bakefile/bakefile-0.2.0-setup.exe?download  [2.45MB]
+
+wxDev-Cpp Installation
+======================
+1. Execute the "wx-devcpp-6.9beta_setup.exe"
+2. Click "OK"
+3. Click "I Agree"
+4. Select "Full". Then click "Next"
+5. Put the program name displaying in the Start menu. Then click "Next"
+6. Put the target directory. It requires about 134.9MB. ###Note: I recommend to use "C:\Dev-Cpp" even if it will mess your directory structure###.
+   Then click "Next"
+9. Click "Install"
+10. Add ";C:\Dev-Cpp\bin;C:\Dev-Cpp\mingw32\bin"  at the end of the "PATH" environment variable. 
+    ###Note: [My Computer]->[Properties]->[Advanced]->[Environment Variables]###
+
+BakeFile Installation
+=====================
+1. Execute the "bakefile-0.2.0-setup.exe"
+2. Click "Next"
+3. Select "I accept the agreement" and then click "Next"
+4. Put the target directory. Then click "Next"
+5. Select componects and then click "Next"
+6. Make that the "Add Bakefile to PATH environment variable" option is selected. Then click "Next"
+7. Wait for installation
+8. Click "Finish"
+
+How to compile Yappi library & Yappi sample 
+===========================================
+[MS Windows][WXDEV-CPP] 
+1. Open the command line [Start]->[Run...]->[cmd.exe]
+2. > cd [YappiLib directory]\build
+3. > bakefile_gen -f mingw
+   ### Note: the step 1 and 2 need to be done just only the first of compilation ###
+4. Open the "wxDev-Cpp" program. ###Note: [Start]->[All Programs]->[wx-devcpp]->[wx-devcpp]###
+5. Open the "yappiSample" project at [Yappi directory]\yapplib\samples\yappisample.dev. 
+   ### Note: yappisample.dev and yappisample.wxform are used exclusively for wxDev-Cpp. (no need for other compilers) ###
+6. Select [Execute]->[Rebuild All]
+
+###Note: the library will be created at "/lib" and the sample will be cteated at "samples/release" ###
