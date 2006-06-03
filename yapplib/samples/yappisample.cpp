@@ -28,10 +28,14 @@ BEGIN_EVENT_TABLE(yappiSample,wxFrame)
 END_EVENT_TABLE()
 ////Event Table End
 
+#define SVN_REVISION  $Revision$
+
 yappiSample::yappiSample(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
 : wxFrame(parent, id, title, position, size, style)
 {
 	CreateGUIControls();
+	
+	this->SetTitle(this->GetTitle() + _T(" - SVN SVN_REVISION"));
 }
 
 yappiSample::~yappiSample() {}
@@ -44,7 +48,7 @@ void yappiSample::CreateGUIControls(void)
 	////GUI Items Creation Start
 
 	this->SetSize(8,8,322,334);
-	this->SetTitle(wxT("Yappi Sample - SVN Revision $Rev$"));
+	this->SetTitle(wxT("Yappi Sample"));
 	this->Center();
 	this->SetIcon(wxNullIcon);
 	

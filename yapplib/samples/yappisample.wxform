@@ -4,7 +4,7 @@ object frmNewForm: TfrmNewForm
   Width = 322
   Height = 334
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'Yappi Sample - SVN Revision $Rev$'
+  Caption = 'Yappi Sample'
   Color = clAppWorkSpace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
