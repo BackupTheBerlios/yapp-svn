@@ -4,6 +4,7 @@
 HOW TO COMPILE YAPPI ON MS WINDOWS 
 BY USING MINGW32 + MSYS
 ==================================
+SVN-ID: $Id$
 
 Prerequisite
 ============

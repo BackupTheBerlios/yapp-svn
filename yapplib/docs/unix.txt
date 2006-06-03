@@ -1,6 +1,7 @@
 HOW TO COMPILE YAPPI ON UNIX like OS 
 BY USING GNU COMPILER
 ====================================
+SVN-ID: $Id$
 
 Prerequisite
 ============
