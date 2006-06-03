@@ -55,14 +55,22 @@
    <exe id="yappitest" template="wx">
        <app-type>gui</app-type>
        
-       <dirname>../samples/release</dirname> <!-- TODO: To find the way to create output directory and to put object files in another directory -->
+       <dirname>../samples/release</dirname> <!-- TODO: To find a way to create output directory and to put object files in another directory -->
 	
-       <sources>../samples/yappitest.cpp</sources>
+       <!-- TODO: to find a way to put header (.h) files to be dependency of source (.cpp) files -->
+       <sources>
+           ../samples/yappisample.cpp
+           ../samples/yappisampleApp.cpp
+       </sources>
 
        <wx-lib>core</wx-lib>
        <wx-lib>net</wx-lib>
        <wx-lib>base</wx-lib>
-       <!-- TODO: to create a resource file : <win32-res>yappitest.rc</win32-res> -->
+
+       <!-- TODO: to find a way to put yappisampleApp.rc file to be dependency of source yappisample_private.rc file -->
+       <win32-res>
+	   ../samples/yappisample_private.rc
+       </win32-res>
    </exe>
 
 </makefile>
