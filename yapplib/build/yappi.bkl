@@ -7,6 +7,8 @@
 
    <!-- The Yappi core library section -->
 
+ <!-- TODO: To add flags to reduce size of the execute file for Windows Platform -->
+
  <!-- TODO: the library section need to be completed
 
     <set var="YAPPI_CORE_SRC" hints="files">
@@ -48,11 +50,11 @@
    <include file="presets/wx.bkl"/>
 
    <set var="BUILDDIR">
-       <if cond="TOOLSET=='win32'">build-$(COMPILER)</if>
+       <if cond="TOOLSET=='win32'">../build/build-$(COMPILER)</if>
        <if cond="TOOLSET!='win32'">.</if>
    </set>
 
-   <exe id="yappitest" template="wx">
+   <exe id="yappisample" template="wx">
        <app-type>gui</app-type>
        
        <dirname>../samples/release</dirname> <!-- TODO: To find a way to create output directory and to put object files in another directory -->
