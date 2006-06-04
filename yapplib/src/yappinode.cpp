@@ -1,6 +1,7 @@
 /**
 
   yappinode.cpp - Copyright enrique
+                  Copyright (c) 2006 Todsawat Thongsuk (todsawatt@hotmail.com)
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -19,7 +20,7 @@
 
 **/
 
-#include "yappi_prec.h"
+// SVN_ID: $Id$
 
 #include "yappinode.h"
 
@@ -29,4 +30,18 @@
 /**
  * Methods
  */
+/**
+ * Start the listener in order to accept the client connection
+ */
+bool yappiNode::startListener (wxIPaddress &addr) {
+    m_yappiListener = new yappiListener(addr);
+     
+    if (m_yappiListener) {
+        if (m_yappiListener->startListening()) {
+          return true;
+        } else {
+          return false;
+        }
+    }
+{
 

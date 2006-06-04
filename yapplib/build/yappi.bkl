@@ -50,7 +50,7 @@
    <include file="presets/wx.bkl"/>
 
    <set var="BUILDDIR">
-       <if cond="TOOLSET=='win32'">../build/build-$(COMPILER)</if>
+       <if cond="TOOLSET=='win32'">..\build\build-$(COMPILER)</if>
        <if cond="TOOLSET!='win32'">.</if>
    </set>
 

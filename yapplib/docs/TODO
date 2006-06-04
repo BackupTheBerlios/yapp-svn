@@ -4,3 +4,5 @@ TODO list
 =========
 - to finish the manual for the MinGW + MSYS on Windows platform
 - to create an environment preparation manual for other platforms
+- to fix a problem about the compilation in the wxDev-Cpp document
+  that the wxDevCpp cannot use the makefile.gcc from bakefile

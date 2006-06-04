@@ -9,6 +9,8 @@
 
 #include "yappisample.h"
 
+#include "yappiNode.h"
+
 //Do not add custom headers
 //wxDev-C++ designer will remove them
 ////Header Include Start
@@ -28,17 +30,22 @@ BEGIN_EVENT_TABLE(yappiSample,wxFrame)
 END_EVENT_TABLE()
 ////Event Table End
 
-#define SVN_REVISION  $Revision$
-
 yappiSample::yappiSample(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &position, const wxSize& size, long style)
 : wxFrame(parent, id, title, position, size, style)
 {
 	CreateGUIControls();
 	
-	this->SetTitle(this->GetTitle() + _T(" - SVN SVN_REVISION"));
+	m_yappiNode = new CYappiNode();
+	
+	wxIPV4address myaddr;
+	myaddr.AnyAddress();
+	myaddr.Service(1234);
+	m_yappiNode->startListener(myaddr);
 }
 
-yappiSample::~yappiSample() {}
+yappiSample::~yappiSample() {
+//    m_yappiNode->destroy();                            
+}
 
 void yappiSample::CreateGUIControls(void)
 {

@@ -1,6 +1,7 @@
 /**
 
-  yappinode.h - Copyright enrique
+  yappinode.h - Copyright enrique 
+                Copyright (c) 2006 Todsawat Thongsuk (todsawatt@hotmail.com)
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -19,14 +20,15 @@
  
 **/
 
-using namespace std;
+// SVN_ID: $Id$
 
 #ifndef YAPPINODE_H
 #define YAPPINODE_H
-#include <string>
-#include "yappiclient.h"
 
-class yappiNode {
+#include <wx/socket.h>
+#include "yappilistener.h"
+
+class CYappiNode {
 /**
  * Public stuff
  */
@@ -43,10 +45,19 @@ public:
   /**
    * Empty Constructor
    */
-  yappiNode ( ) { }
+  CYappiNode ( ) { }
+  ~CYappiNode ( ) { }
   /**
    * Accessor Methods
    */
+  /**
+   * Operations
+   */
+  /**
+   * Start the listener in order to accept the client connection
+   */
+  void startListener (wxIPaddress &addr);
+  
 /**
  * Protected stuff
  */
@@ -70,6 +81,7 @@ private:
   /**
    * Fields
    */
+  CYappiListener *m_yappiListener;
   /**
    * 
    */
