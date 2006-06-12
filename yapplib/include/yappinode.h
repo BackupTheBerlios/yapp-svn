@@ -20,7 +20,7 @@
  
 **/
 
-// SVN_ID: $Id$
+// SVN-ID: $Id$
 
 #ifndef YAPPINODE_H
 #define YAPPINODE_H

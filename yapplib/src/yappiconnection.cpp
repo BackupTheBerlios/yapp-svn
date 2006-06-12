@@ -1,6 +1,7 @@
 /**
 
   yappiconnection.cpp - Copyright enrique
+                        Copyright (c) 2006 Todsawat Thongsuk (todsawatt@hotmail.com)
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -19,54 +20,136 @@
 
 **/
 
-#include "yappi_prec.h"
+// SVN-ID: $Id$
 
 #include "yappiconnection.h"
+
+/***********************************************************************************************************
+ * The CYappiConnectionHandler class: Using for handling the socket event for connection. 
+ *                                    Every connection can share a event handler in order to save memory.
+ ***********************************************************************************************************/
+
+class CYappiConnectionHandler: public wxEvtHandler {
+public:
+	CYappiConnectionHandler() {};
+private:
+	void OnSocketEvent(wxSocketEvent& event);
+	DECLARE_EVENT_TABLE()
+};
+
+BEGIN_EVENT_TABLE(CYappiConnectionHandler, wxEvtHandler)
+	EVT_SOCKET(wxID_ANY /* TODO: define a ID */, CYappiConnectionHandler::OnSocketEvent)
+END_EVENT_TABLE()
+
+void CYappiConnectionHandler::OnSocketEvent(wxSocketEvent& event)
+{
+	CYappiConnection *connection = dynamic_cast<CYappiConnection *>(event.GetSocket());
+	wxASSERT(connection);
+	if (!connection) {
+		return;
+	}
+ 
+	if (connection->OnDestroy()) {
+		return;
+	}
+       
+	switch(event.GetSocketEvent()) {
+		case wxSOCKET_CONNECTION:
+			connection->OnConnect(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_LOST:
+			connection->OnError(connection->LastError());
+			break;
+		case wxSOCKET_INPUT:
+			connection->OnReceive(wxSOCKET_NOERROR);
+			break;
+		case wxSOCKET_OUTPUT:
+			connection->OnSend(wxSOCKET_NOERROR);
+			break;
+		default:
+			wxASSERT(0);
+			break;
+	}   
+}
+
+// declare a global variable of the Yappi connection event handler
+static CYappiConnectionHandler g_yappiConnectionHandler;
+
+/************************************************************************************************************
+ * The CYappiConnection class: Using for keeping every status of each connection. The callback functions will 
+ *                             will be called from g_yappiConnectionHandler operating as an event dispatcher. 
+ ************************************************************************************************************/
+
+IMPLEMENT_DYNAMIC_CLASS(CYappiConnection, wxSocketClient)
 
 /**
  * Constructors/Destructors
  */
+
+CYappiConnection::CYappiConnection() 
+	: wxSocketClient(wxSOCKET_NOWAIT)  
+{
+	SetConnectionTimeOut(CONNECTION_TIMEOUT); // Set timeout to the default
+    SetConnectionState(0);
+
+	SetEventHandler(g_serverSocketHandler, -1 /* TODO: to add ID*/);
+         
+	SetNotify(
+		wxSOCKET_CONNECTION_FLAG |
+		wxSOCKET_INPUT_FLAG |
+		wxSOCKET_OUTPUT_FLAG |
+		wxSOCKET_LOST_FLAG);
+
+	Notify(TRUE);
+}
+
+CYappiConnection::~CYappiConnection() 
+{
+	SetNotify(0);
+	Notify(FALSE);
+}
+
 /**
  * Methods
  */
-/**
- * Get the value of remoteNode
- * Contains the IP address of the remote node
- * @return the value of remoteNode
- */
-string yappiConnection::get_remoteNode ( ) {
-  
-}
-/**
- * Set the value of remoteNode
- * Contains the IP address of the remote node
- * @param value the value of remoteNode
- */
-void yappiConnection::set_remoteNode (string value ) {
-  
-}
-/**
- * Get the value of status
- * Indicates possible status:
- * 1. Active
- * 2. Stale
- * 3. Resetting
- * 4. Unknown
- * @return the value of status
- */
-int yappiConnection::get_status ( ) {
-  
-}
-/**
- * Set the value of status
- * Indicates possible status:
- * 1. Active
- * 2. Stale
- * 3. Resetting
- * 4. Unknown
- * @param value the value of status
- */
-void yappiConnection::set_status (int value ) {
-  
+
+void  CYappiConnection::OnConnect(wxUint32 nErrorCode) 
+{
 }
 
+void  CYappiConnection::OnSend(wxUint32 nErrorCode) 
+{
+	if (nErrorCode){
+		OnError(nErrorCode);
+		return;
+	}
+}
+
+void  CYappiConnection::OnReceive(wxUint32 nErrorCode) 
+{
+	if(nErrorCode) {
+		wxUint32 error = LastError(); 
+		if (error != wxSOCKET_WOULDBLOCK) {
+			OnError(nErrorCode);
+			return;
+
+		}
+	}
+}
+
+void CServerSocket::setConnectionState(sint8 newstate) 
+{
+	m_connection_state = state;
+
+    //TODO: To do action for the new staus
+}
+
+wxUint32 CServerSocket::getConnectionTimeOut() 
+{
+	return m_timeout;
+}
+
+void CServerSocket::SetConnectionTimeOut(wxUint32 timeout) 
+{
+	m_timeout = timeout;
+}

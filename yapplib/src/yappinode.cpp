@@ -20,7 +20,7 @@
 
 **/
 
-// SVN_ID: $Id$
+// SVN-ID: $Id$
 
 #include "yappinode.h"
 
@@ -33,15 +33,17 @@
 /**
  * Start the listener in order to accept the client connection
  */
-bool yappiNode::startListener (wxIPaddress &addr) {
+bool CYappiNode::startListener (wxIPaddress &addr) {
     m_yappiListener = new yappiListener(addr);
      
     if (m_yappiListener) {
         if (m_yappiListener->startListening()) {
           return true;
         } else {
-          return false;
+          return false; // Cannot start listening to the port
         }
-    }
+    } else {
+		return false; // Error cannot create yappiListener object
+	}
 {
 

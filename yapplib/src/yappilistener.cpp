@@ -24,7 +24,7 @@
 #include "yappilistener.h"
 
 BEGIN_EVENT_TABLE(CYappiListener, wxEvtHandler)
-    EVT_SOCKET(wxID_ANY, CYappiListener::OnSocketEvent)
+    EVT_SOCKET(wxID_ANY /* TODO: to define an ID */, CYappiListener::OnSocketEvent)
 END_EVENT_TABLE()
 
 CYappiListener::CYappiListener(wxIPaddress &addr)
@@ -42,49 +42,55 @@ CYappiListener::CYappiListener(wxIPaddress &addr)
     }
 }
 
-CYappiListenSocket::~CYappiListenSocket() 
+CYappiListenert::~CYappiListener() 
 {
     Discard();
     Close();
  
-bool CYappiListenSocket::StartListening()
+bool CYappiListener::StartListening()
 {
     //TODO 
     return true;
 }
  
-void CYappiListenSocket::StopListening()
+void CYappiListener::StopListening()
 {
     //TODO
 }
 
-void CListenSocket::AddConnection(CYappiConnection* connection)
+void CYappiListener::AddConnection(CYappiConnection* connection)
 {
     wxASSERT(connection);
     m_yappiConnection_list.insert(connection);
 }
 
-void CListenSocket::RemoveConnection(CYappiConnection* connection)
+void CYappiListener::RemoveConnection(CYappiConnection* connection)
 {
     wxASSERT(connection);
     m_yappiConnection_list.erase(connection);
 }
 
-void CYappiListenSocket::OnAccept(wxSocketEvent& event) 
+void CYappiListener::OnAccept(wxUint8 nErrorCode) 
 {
-    CYappiConnection* newconnection = new CYappiConnection();
-    if (!AcceptWith(*newconnection, false)) {
-        newclient->Safe_Delete();
-    } else {
-        AddConnection(newconnection);
-    }
+	if (!nErrorCode) {
+        //TODO: to add mechanism to limit the number of concurrent connection
+
+	    CYappiConnection* newconnection = new CYappiConnection();
+	    if (!AcceptWith(*newconnection, false)) {
+		    newconnection->Safe_Delete();
+	    } else {
+		    AddConnection(newconnection);
+	    }
+	}
 }
 
-void CYappiListenSocket::OnSocketEvent(wxSocketEvent& event) 
+void CYappiListener::OnSocketEvent(wxSocketEvent& event) 
 {
+	wxASSERT(event.GetSocket() == this);
+
 	switch (event.GetSocketEvent()) {
   	    case wxSOCKET_CONNECTION:
-    		OnAccept(event);
+    		OnAccept(wxSOCKET_NOERROR);
 		    break;
     }
 }

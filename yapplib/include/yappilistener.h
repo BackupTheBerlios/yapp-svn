@@ -36,75 +36,77 @@ class CYappiListener : public wxSocketServer, public wxEvtHandler {
  * Public stuff
  */
 public:
-  /**
-   * Fields
-   */
-  /**
-   * 
-   */
-  /**
-   * Constructors
-   */
-  /**
-   * Empty Constructor
-   */
-  CYappiListener(wxIPaddress &addr);
-  ~CYappiListener(); 
-  /**
-   * Accessor Methods
-   */
-  /**
-   * Operations
-   */
-  /**
-   * Start the listener in order to accept the client connection
-   */
-  bool StartListening();
-  /**
-   * Stop the listener in order not to accept the client connection
-   */
-  void StopListening();
+	/**
+	 * Fields
+	 */
+	/**
+	 * 
+	 */
+	/**
+	 * Constructors
+	 */
+	/**
+	 * Empty Constructor
+	 */
+	CYappiListener(wxIPaddress &addr);
+	~CYappiListener(); 
+	/**
+	 * Accessor Methods
+	 */
+	/**
+	 * Operations
+	 */
+	/**
+	 * Start the listener in order to accept the client connection
+	 */
+	bool StartListening();
+	/**
+	 * Stop the listener in order not to accept the client connection
+	 */
+	void StopListening();
 
-  wxUint32 GetOpenSockets() { return m_yappiConnection_list.size(); }
-  void AddConnection(CYappiConnection* connection);
-  void RemoveConnection(CYappiConnection* connection);
+	wxUint32 GetNumberOpenSockets() { return m_yappiConnection_list.size(); }
+	void AddConnection(CYappiConnection* connection);
+	void RemoveConnection(CYappiConnection* connection);
   
 /**
  * Protected stuff
  */
 protected:
-  /**
-   * Fields
-   */
-  /**
-   * 
-   */
-  /**
-   * Constructors
-   */
-  /**
-   * Accessor Methods
-   */
-   void OnSocketEvent(wxSocketEvent& event);
-   void OnConnect(wxSocketEvent& event);
+	/**
+	 * Fields
+	 */
+	/**
+	 * 
+	 */
+	/**
+	 * Constructors
+	 */
+	/**
+	 * Accessor Methods
+	 */
+	void OnSocketEvent(wxSocketEvent& event);
+	void OnAccept(wxUint8 nErrorCode);
   
 /**
  * Private stuff
  */
 private:
-  /**
-   * Fields
-   */
-  std::set<CYappiConnection *> m_yappiConnection_list;
-  /**
-   * 
-   */
-  /**
-   * Constructors
-   */
-  /**
-   * Accessor Methods
-   */
-   DECLARE_EVENT_TABLE();
+	/**
+	 * Fields
+	 */
+	std::set<CYappiConnection *> m_yappiConnection_list;
+	/**
+	 * 
+	 */
+	/**
+	 * Constructors
+	 */
+	/**
+	 * Accessor Methods
+	 */
+	
+	DECLARE_EVENT_TABLE();
+
 };
 #endif //YAPPILISTENER_H

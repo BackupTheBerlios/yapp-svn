@@ -1,6 +1,7 @@
 /**
 
   yappiconnection.h - Copyright enrique
+                      Copyright (c) 2006 Todsawat Thongsuk (todsawatt@hotmail.com)
 
   YAPPI is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published
@@ -19,117 +20,87 @@
  
 **/
 
-using namespace std;
+// SVN-ID: $Id$
 
 #ifndef YAPPICONNECTION_H
 #define YAPPICONNECTION_H
-#include <string>
 
-class yappiConnection {
+#include <wx/socket.h>   // For wxSocketClient
+#include <wx/defs.h>     // For wxUint8
+
+#define CONNECTION_TIMEOUT 40000 // Default timeout of the connection
+
+class CYappiConnection: public wxSocketClient {
+
+	DECLARE_DYNAMIC_CLASS(CYappiConnection)
+
 /**
  * Public stuff
  */
 public:
-  /**
-   * Fields
-   */
-  /**
-   * 
-   */
-  /**
-   * Constructors
-   */
-  /**
-   * Empty Constructor
-   */
-  yappiConnection ( ) { }
-  /**
-   * Accessor Methods
-   */
+	/**
+	 * Fields
+	 */
+	/**
+	 * 
+	 */
+	/**
+	 * Constructors
+	 */
+	CYappiConnection();
+	virtual ~CYappiConnection();
+	/**
+	 * Accessor Methods
+	 */
+	wxUint8 getConnectionState() { return m_connection_state; }
+
+	virtual void  OnConnect (wxUint32 nErrorCode); 
+	virtual void  OnError (wxUint32 nErrorCode) { }; 
+	virtual void  OnSend (wxUint32 nErrorCode); 
+	virtual void  OnReceive (wxUint32 nErrorCode);  
+
+	wxUint32 getConnectionTimeOut();	     
+	void setConnectionTimeOut(wxUint32 timeout);
+
 /**
  * Protected stuff
  */
 protected:
-  /**
-   * Fields
-   */
-  /**
-   * Contains the IP address of the remote node
-   */
-   string remoteNode;
-  /**
-   * Indicates possible status:
-   * 1. Active
-   * 2. Stale
-   * 3. Resetting
-   * 4. Unknown
-   */
-   int status;
-  /**
-   * 
-   */
-  /**
-   * Constructors
-   */
-  /**
-   * Accessor Methods
-   */
-  /**
-   * Get the value of remoteNode
-   * Contains the IP address of the remote node
-   * @return the value of remoteNode
-   */
-  string get_remoteNode ( );
-    
-  
-  /**
-   * Set the value of remoteNode
-   * Contains the IP address of the remote node
-   * @param value the value of remoteNode
-   */
-  void set_remoteNode (string value );
-    
-  
-  /**
-   * Get the value of status
-   * Indicates possible status:
-   * 1. Active
-   * 2. Stale
-   * 3. Resetting
-   * 4. Unknown
-   * @return the value of status
-   */
-  int get_status ( );
-    
-  
-  /**
-   * Set the value of status
-   * Indicates possible status:
-   * 1. Active
-   * 2. Stale
-   * 3. Resetting
-   * 4. Unknown
-   * @param value the value of status
-   */
-  void set_status (int value );
-    
-  
+	/**
+	 * Fields
+	 */
+	/**
+	 * 
+	 */
+	/**
+	 * Constructors
+	 */
+	/**
+	 * Accessor Methods
+	 */
+	void resetConnectionTimer();
+
+
 /**
  * Private stuff
  */
 private:
-  /**
-   * Fields
-   */
-  /**
-   * 
-   */
-  /**
-   * Constructors
-   */
-  /**
-   * Accessor Methods
-   */
+	/**
+	 * Fields
+	 */
+	wxUint8 m_connection_state;
+	wxUint32 m_timeout;
+	/**
+	 * 
+	 */
+	/**
+	 * Constructors
+	 */
+	/**
+	 * Accessor Methods
+	 */
+	void setConnectionState(wxUint8 state);
+
 };
 #endif //YAPPICONNECTION_H
 
