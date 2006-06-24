@@ -36,7 +36,6 @@ $yappi_node -> subscribe ( "WEA.THONEX" ) ;
 my $myEntity = Entity -> new( -yec => "WEA.COLLONGESOUSALEVE" ) ;
 
 while (1) {
-    print "While 1 \n" ;
     sleep 1;
     
     # Every minute show the last data we received
@@ -47,10 +46,10 @@ while (1) {
 
 
     # and we publish some data ourselves too ...
-    my $newtick = $myEntity->createTick ( -temperature => $frogdata->{temperature},
-					  -humidity => $frogdata->{humidity}  ) ;
+    my $newtick = $myEntity->createTick ( temperature => $frogdata->{temperature},
+					  humidity => $frogdata->{humidity}  ) ;
 
-    $yappi_node -> sendupdate( $newtick ) ; 
+    $yappi_node -> sendUpdate( $newtick ) ; 
     
 }
 
@@ -90,8 +89,8 @@ sub newData {
 sub showLastData{
 
     my $yec = shift ;
-    my $ticklist = $yappi_node -> subscriptions ( $yec ) -> ticks ;
-    print "Showlast data \n" ;
+    my $ticklist = $yappi_node -> subscriptions ($yec) -> ticks ;
+
     my @ticklist = @{$ticklist} ;
     my $count = 10 ;
 
@@ -99,13 +98,13 @@ sub showLastData{
 
     # Do we have already $count points to show ? check
     $count = $#ticklist if ( $#ticklist < $count ) ;
-
+    return if ( $count<=0) ;
     print "Showing last $count data for $yec : \n" ;
     for ( my $i=$#ticklist - $count , $i == $#ticklist, $i++ ) {
 	
-	print $yec . $ticklist[$i] -> {'time'} . $ticklist[$i] -> {'temperature'} . "\n " ;
+	print $yec . $ticklist[$i] -> {'time'} . $ticklist[$i] -> {'temperature'} . "\n" ;
     }
-
+    print "End showing data \n" ;
 }
 
 sub raiseError {

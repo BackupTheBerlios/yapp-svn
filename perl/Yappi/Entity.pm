@@ -3,8 +3,9 @@ package Entity ;
 ###############################################################################################################################
 sub new {
     my ($class, %args) = @_;
-    my $id = $args{ id } ;
+    my $yec = $args{ yec } ;
     my $self = {
+	'yec' => $yec 
     } ;
     bless $self, $class;
     return $self ;
@@ -12,16 +13,20 @@ sub new {
 ###############################################################################################################################
 
 sub createTick {
+    my ($self, %data) = @_;
 
-    my $self = shift ;
-    my %data = %{shift} ;
-
+    #printf "Creating tick for entity %s\n", $self->{'yec'} ; 
     my $tick = new Yappi::Tick ;
-    foreach (keys  %data ) {
-
-	$tick->{'$_'} = $data{'$_'} ;
+    
+    for (keys  %data ) {
+	# printf "Setting %s = %s \n", $_,$data{$_} ;
+	$tick->{$_} = $data{$_} ;
+	$tick -> {time} = time ;
 
     }
+    $tick->{'yec'} = $self->{'yec'} ;
+    # Attach a reference to the entity that created us
+    $tick -> {'entity'} = $self ;
     return $tick ;
 
 }

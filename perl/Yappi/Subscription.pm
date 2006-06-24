@@ -3,12 +3,13 @@ package Subscription ;
 ###############################################################################################################################
 sub new {
     my ($class, %args) = @_;
-    my $yec = shift ;
+    my $yec = $args{ 'yec' } ;
     my $id = $args{ id } ;
     my $self = {
 	yec => $yec ,
-	ticks => {} ;
+	ticks => [] 
     } ;
+    # print "Subscription::new  subscribed to $yec \n" ;
     bless $self, $class;
     return $self ;
 }
