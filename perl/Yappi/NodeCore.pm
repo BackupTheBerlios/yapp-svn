@@ -45,7 +45,7 @@ sub connectToServer {
 	while ( $res = <$sock> ) {
 	    if ( $res =~ /^CLID\ (.*)/ ) {
 
-		$clientid = $1 ;
+		$clientid = $1 ;	       
 		print "This is clientid $clientid\n", 
 	    }
 	}

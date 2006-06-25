@@ -140,7 +140,7 @@ sub listener {
     my $self = shift ;
 
     my @serverlist = NodeCore::getServerList() ;
-    my $readServer_set;
+    my $readServer_set = new IO::Select();
 
     if ( $#serverlist < 0 ) {
 	warn "Couldnt find a list of servers\n" ;
@@ -148,19 +148,22 @@ sub listener {
     } else {
 	
 	print "Found $#serverlist+1 nodes to connect to\n" ;
-	for ( @serverlist) {
-	    printf "Connecting to %s:%s\n" , $_->{'servername'},$_->{'port'} ;
-	    my $s = NodeCore::connectToServer($_) ;
-	    $readServer_set = new IO::Select(); 
-            # create handle set for reading
-	    $readServer_set->add($s);           
-            # add the main socket to the set
+	while ( ! $readServer_set->count() ) {
+	    for ( @serverlist) {
+		printf "Connecting to %s:%s\n" , $_->{'servername'},$_->{'port'} ;
+		my $s = NodeCore::connectToServer($_) ;
+		# create handle set for reading
+		$readServer_set->add($s);           
+		# add the main socket to the set
+	    }
+	    warn "We are not connected to a server, wait and retry\n" ;
+	    sleep(10) ;
 	}
-
+	
 	while (1) { # forever
 	    # get a set of readable handles (blocks until at least one handle is ready)
-	    print "Node::listener waiting for input \n" ;
-	    my $rh_set = IO::Select->select($read_set, undef, undef, 0);
+	    #print "Node::listener waiting for input \n" ;
+	    my $rh_set = IO::Select->select($readServer_set, undef, undef, 0);
 	    # take all readable handles in turn
 
 	    foreach $rh (@$rh_set) {
@@ -215,26 +218,55 @@ sub listener {
 }
 
 # This is teh server listener ...
+# Waits for connections from :
+# - Nodes in the network
+# - SuperNodes
 sub slistener {
+
     my $ss = NodeCore::snodeListenSocket() ;
     my ($ns, $buf);
-    while( $ns = $ss->accept() ) { # wait for and accept a connection
-	print "Node::slistener Someone has connected\n" ;
-	while( defined( $buf = <$ns> ) ) { # read from the socket
-	    print "Node::slistener It says $buf\n" ;
-	    if ( $buf =~ /GET\ \/HELO/ ) {
-		print "Lets reply with an RHELO ...";
-		print $ns "RHELO\n" ;
-		print $ns "CLID 123123123\n" ;
-		print "reply sent\n" ;
-	    } else {
+    my $readNode_set = new IO::Select($ss);
+    printf "Node::slistener wait for connections\n" ;
+    
+    while(@ready = $readNode_set->can_read) {
+	foreach my $rh (@ready) {
+	    if($rh == $ss) {
+		# Create a new socket
+		$new = $ss->accept;
+		$readNode_set->add($new);
+		my $peeraddr = Socket::inet_ntoa($new->peeraddr() );
+		printf "Node::slistener Someone has connected from %s\n", $peeraddr ;
 
 	    }
-	    # do some processing
+	    else {
+		# Process socket
+		$buf = <$rh>;
+		if($buf) { # we get normal input
+		    # ... process $buf ...
+		    
+		    print "Node::slistener It says $buf\n" ;
+		    if ( $buf =~ /GET\ \/HELO/ ) {
+			print "Lets reply with an RHELO ...";
+			print $rh "RHELO\n" ;
+			
+			# Check if this has a client id already
+			# if not provide one
+			if ( $buf  !~ /GET\ \/HELO\ (.+)/ ) {
+			    print $rh "CLID 123123123\n" ;
+			}
+		    }
+		}
+		else { # the client has closed the socket
+		    # remove the socket from the $read_set and close it
+		    print "Node::slistener closes connection\n" ;
+		    $readNode_set->remove($rh);
+		    close($rh);
+		}
+
+	    }
 	}
     }
-    close($s);
-}
-
+    
+}    
 1 ;
 
