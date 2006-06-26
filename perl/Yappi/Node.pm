@@ -1,15 +1,24 @@
 package Node ;
+use strict ;
 use threads;
 use threads::shared;
 use Yappi::NodeCore ;
 use Yappi::Subscription; 
 ###############################################################################################################################
+
+my $MIN_SERVERS=1;
+my $cserverlist : shared ;
+my $clientid : shared ;
 sub new {
     my ($class, %args) = @_;
     my $id = $args{ id } ;
+
     my $self = {
 	subscriptions => {} 
 	} ;
+
+    $cserverlist =  &share([]);
+
     bless $self, $class;
     return $self ;
 }
@@ -24,17 +33,15 @@ sub dummy {
 sub start {
 
     my $self = shift ;
-    my $bar = &share([]);
-    $self{bar} = &share({});
-
+    
     my $thr = new threads \&listener, $self ;
-    print "Yappi::Node And now detach the newly created listener thread\n" ;
     $thr->detach;
 
     my $sthr = new threads \&slistener, $self ;
-    print "Yappi::Node And now detach the newly created server listener thread\n" ;
     $thr->detach;
 
+    my $sthr = new threads \&stats, $self ;
+    $thr->detach;
     return ;
 }
 
@@ -85,7 +92,7 @@ sub sendUpdate  {
 	foreach ( $self -> {'peers' } ) {
 
 	}
-	return $self->{'subscriptions'}->{$yec} ;
+	return  ;
 }
 
 sub storeTick {
@@ -140,58 +147,66 @@ sub listener {
     my $self = shift ;
 
     my @serverlist = NodeCore::getServerList() ;
+
     my $readServer_set = new IO::Select();
 
     if ( $#serverlist < 0 ) {
 	warn "Couldnt find a list of servers\n" ;
 	return ;
-    } else {
-	
-	print "Found $#serverlist+1 nodes to connect to\n" ;
-	while ( ! $readServer_set->count() ) {
+    }
+
+    print "Found $#serverlist+1 nodes to connect to\n" ;
+    
+    while (1) {
+
+	# Try servers in the list until we reach $MIN_SERVERS
+	# of course if serverlist is smaller than $MIN_SERVERS
+	# then serverlist size applies
+	while ( $readServer_set->count() < $MIN_SERVERS && 
+		$readServer_set->count() < $#serverlist ) {
 	    for ( @serverlist) {
 		printf "Connecting to %s:%s\n" , $_->{'servername'},$_->{'port'} ;
-		my $s = NodeCore::connectToServer($_) ;
+
+		my ($s, $tmpid) = NodeCore::connectToServer($_, $clientid) ;
+
 		# create handle set for reading
-		$readServer_set->add($s);           
-		# add the main socket to the set
+		if ( $s ) {
+		    $clientid = $tmpid ;
+		    print "Node::listener Connected and happy with an id $clientid\n" ;
+		    $readServer_set->add($s);
+		    print "Node::listener adding new server to the list of connected servers\n" ;
+		    push @{$cserverlist} , $_->{'servername'} . ":" . $_->{'port'} ;
+		    # add the main socket to the set
+		}
 	    }
 	    warn "We are not connected to a server, wait and retry\n" ;
 	    sleep(10) ;
 	}
 	
-	while (1) { # forever
-	    # get a set of readable handles (blocks until at least one handle is ready)
-	    #print "Node::listener waiting for input \n" ;
-	    my $rh_set = IO::Select->select($readServer_set, undef, undef, 0);
+	#my $rh_set = IO::Select->select($readServer_set, undef, undef, 0);
+	while (my @ready = $readServer_set->can_read ) { # forever
+	    
 	    # take all readable handles in turn
-
-	    foreach $rh (@$rh_set) {
-		# if it is the main socket then we have an incoming connection and
-		# we should accept() it and then add the new socket to the $read_set
-		#if ($rh == $s) {
-		#    $ns = $rh->accept();
-		#    $read_set->add($ns);
-		#}
-		# otherwise it is an ordinary socket and we should read and process the request
-		#else {
-		$buf = <$rh>;
+	    
+	    foreach my $rh (@ready) {
+		
+		my $buf = <$rh>;
 		if($buf) { # we get normal input
 		    # ... process $buf ...
 		    print "Server says $buf\n" ;
 		}
 		else { # the client has closed the socket
 		    # remove the socket from the $read_set and close it
-		    $read_set->remove($rh);
+		    $readServer_set->remove($rh);
 		    close($rh);
 		}
-		#}
-	    }
-	}
-	
-	
-    } 
+		
+	    } # foreach $rh
+	    
+	} # While ready sockets
+    } # infinite loop    
 
+    warn "Node::listener ENDS!!!!\n" ;
     return ;
     # simulate some real traffic ...
     my $myEntity = Entity -> new( yec => "WEA.MADRID" ) ;
@@ -228,11 +243,11 @@ sub slistener {
     my $readNode_set = new IO::Select($ss);
     printf "Node::slistener wait for connections\n" ;
     
-    while(@ready = $readNode_set->can_read) {
+    while(my @ready = $readNode_set->can_read) {
 	foreach my $rh (@ready) {
 	    if($rh == $ss) {
 		# Create a new socket
-		$new = $ss->accept;
+		my $new = $ss->accept;
 		$readNode_set->add($new);
 		my $peeraddr = Socket::inet_ntoa($new->peeraddr() );
 		printf "Node::slistener Someone has connected from %s\n", $peeraddr ;
@@ -242,16 +257,20 @@ sub slistener {
 		# Process socket
 		$buf = <$rh>;
 		if($buf) { # we get normal input
-		    # ... process $buf ...
-		    
+		    # ... process $buf ...		    
 		    print "Node::slistener It says $buf\n" ;
 		    if ( $buf =~ /GET\ \/HELO/ ) {
 			print "Lets reply with an RHELO ...";
 			print $rh "RHELO\n" ;
-			
+
 			# Check if this has a client id already
 			# if not provide one
-			if ( $buf  !~ /GET\ \/HELO\ (.+)/ ) {
+
+			if ( $buf =~ /HELO\ (.+)/ ) {
+			    print $rh "CLID $1\n" ;			    
+
+			} else {
+
 			    print $rh "CLID 123123123\n" ;
 			}
 		    }
@@ -268,5 +287,18 @@ sub slistener {
     }
     
 }    
+
+sub stats {
+
+
+    while(1) {
+	my @cserverlist = @{$cserverlist} ;
+	print "We are clientid $clientid connected to : $#cserverlist + 1 servers\n" ;
+	for (@cserverlist) { print "Server: $_\n" ;} 
+	sleep(10) ;
+    }
+
+}
+
 1 ;
 

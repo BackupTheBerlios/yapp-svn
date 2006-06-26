@@ -1,5 +1,6 @@
 package NodeCore ;
 
+use strict ;
 use LWP::UserAgent;
 use XML::LibXML ;
 use IO::Select;
@@ -21,6 +22,7 @@ sub snodeListenSocket {
 sub connectToServer {
 
     my $snode = shift  ;
+    my $clientid = shift ;
     my $server= $snode->{'servername'};
     my $port = $snode->{'port'} ;
 	
@@ -33,29 +35,41 @@ sub connectToServer {
 
     my $clientid ;
     if ( $sock ) {
-	print $sock "GET /HELO\n" ;
-	print "NodeCore::connectToServer waiting RHELO msg\n";
-	my $res = <$sock> ;
 
-	if ( $res !~ /^RHELO/ ) {
-	    warn "Reply to a HELO is not a RHELO\n" ;
-	    return;
+	if ( $clientid ) {
+	    print $sock "GET /HELO $clientid\n" ;
+	} else {
+	    print $sock "GET /HELO\n" ;
 	}
-	print "NodeCore::connectToServer Reply RHELO received, wait for client id\n" ;
-	while ( $res = <$sock> ) {
-	    if ( $res =~ /^CLID\ (.*)/ ) {
 
+	print "NodeCore::connectToServer send HELO waiting RHELO msg\n";
+
+	while ( my $res = <$sock> ) {
+	    chop $res;
+	    warn "NodeCore::connectToServer Parsing one line of input '$res'\n" ;
+	    if ( $res =~ /CLID\ (.*)/ ) {
 		$clientid = $1 ;	       
-		print "This is clientid $clientid\n", 
+		print "This is clientid $clientid\n" ;
+		return ($sock, $clientid) ;
+	    }
+
+	    elsif ( $res =~ /^RHELO/ ) {
+		print "NodeCore::connectToServer Reply RHELO received, wait for client id\n" ;
+		
+	    }
+
+	    else {
+		warn "Reply from server not understood\n" ;
+		return;
 	    }
 	}
-	return $sock ;
-
-    } else {
-
+	
+	
+    } else {  # No socket
+	
 	printf "Couldnt connect to server %s:%s :$!\n", $server, $port ;
 	return ;
-
+	
     }
     
 }
@@ -86,7 +100,7 @@ sub getServerList {
 
 	    # ... and the correct name
 	    if ( $elem->getName() eq "yappiNodeList" ) {
-
+		my @nodelist ;
 		# find class definitions without XPath :-P
 		foreach my $child ( $elem->getElementsByTagName("node") ) { 
 
