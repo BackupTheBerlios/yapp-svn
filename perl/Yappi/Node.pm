@@ -14,8 +14,9 @@ sub new {
     my $id = $args{ id } ;
 
     my $self = {
-	subscriptions => {} 
-	} ;
+	subscriptions => {},
+	serverlist => []
+    } ;
 
     $cserverlist =  &share([]);
 
@@ -154,7 +155,7 @@ sub listener {
 	warn "Couldnt find a list of servers\n" ;
 	return ;
     }
-
+    $self->serverListAdd( @serverlist ) ;
     print "Found $#serverlist+1 nodes to connect to\n" ;
     
     while (1) {
@@ -164,7 +165,7 @@ sub listener {
 	# then serverlist size applies
 	while ( $readServer_set->count() < $MIN_SERVERS && 
 		$readServer_set->count() < $#serverlist ) {
-	    for ( @serverlist) {
+	    for ( @{$self->{serverlist}}) {
 		printf "Connecting to %s:%s\n" , $_->{'servername'},$_->{'port'} ;
 
 		my ($s, $tmpid) = NodeCore::connectToServer($_, $clientid) ;
@@ -172,14 +173,15 @@ sub listener {
 		# create handle set for reading
 		if ( $s ) {
 		    $clientid = $tmpid ;
-		    print "Node::listener Connected and happy with an id $clientid\n" ;
+		    my $peer = gethostbyaddr($s->peeraddr,"AF_INET") || $s->peerhost;
+		    printf "Node::listener Connected to %s and with an id $clientid\n", $peer ;
 		    $readServer_set->add($s);
 		    print "Node::listener adding new server to the list of connected servers\n" ;
 		    push @{$cserverlist} , $_->{'servername'} . ":" . $_->{'port'} ;
 		    # add the main socket to the set
 		}
 	    }
-	    warn "We are not connected to a server, wait and retry\n" ;
+	    #warn "We are not connected to a server, wait and retry\n" ;
 	    sleep(10) ;
 	}
 	
@@ -198,6 +200,7 @@ sub listener {
 		else { # the client has closed the socket
 		    # remove the socket from the $read_set and close it
 		    $readServer_set->remove($rh);
+		    
 		    close($rh);
 		}
 		
@@ -287,6 +290,27 @@ sub slistener {
     }
     
 }    
+
+sub serverListAdd {
+
+    my @serverlist = @_ ;
+    my @newlist = @{$self->{serverlist }};
+
+    my %control ;
+    
+    for ( @newlist ) {
+	my $tmpkey = $_->{'servername'} . ":" . $_->{'port'} ;
+	$control{$tmpkey} = 1 ;
+    }
+
+    for (@serverlist) {
+	my $tmpkey = $_->{'servername'} . ":" . $_->{'port'} ;
+	push @newlist if ( ! $control{$tmpkey} ) ;
+    } 
+
+    $self->{serverlist} = \@newlist ;
+    return @newlist ;
+}
 
 sub stats {
 
