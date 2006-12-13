@@ -1,3 +1,0 @@
-package Yappi ;
-
-1 ;

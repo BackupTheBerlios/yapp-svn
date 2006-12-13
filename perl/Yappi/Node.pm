@@ -9,13 +9,19 @@ use Yappi::Subscription;
 my $MIN_SERVERS=1;
 my $cserverlist : shared ;
 my $clientid : shared ;
+my @peers ;
+share(@peers) ;
 sub new {
     my ($class, %args) = @_;
     my $id = $args{ id } ;
 
     my $self = {
 	subscriptions => {},
-	serverlist => []
+	serverlist => [],
+	sport => "5555",
+	serverListUrl => '',
+	serverEnabled => 1
+	    
     } ;
 
     $cserverlist =  &share([]);
@@ -35,11 +41,14 @@ sub start {
 
     my $self = shift ;
     
-    my $thr = new threads \&listener, $self ;
+    my $thr = new threads \&clistener, $self ;
     $thr->detach;
 
-    my $sthr = new threads \&slistener, $self ;
-    $thr->detach;
+    if ( $self -> {serverEnabled} ) {
+	print "Node::start() Start slistener\n" ;
+	my $sthr = new threads \&slistener, $self ;
+	$thr->detach;
+    }
 
     my $sthr = new threads \&stats, $self ;
     $thr->detach;
@@ -54,14 +63,21 @@ sub updateCallback {
     
     return ;
 }
-###############################################################################################################################
+####################################################################
+sub setIncomingPort {
+    my $self = shift ;
+    my $port = shift ;
+    $self -> {sport} = $port  ;
+    return ;
+}
+####################################################################
 sub statusCallback {
     my $self = shift ;
     my $callback = shift ;
     $self -> {statusCallback} = $callback  ;
     return ;
 }
-###############################################################################################################################
+####################################################################
 sub subscribe {
     my $self = shift ;
     my $yec = shift ;
@@ -89,9 +105,21 @@ sub sendUpdate  {
 	my $self = shift ;
 	my $tick = shift ;
 	push @{$self->{ticks}} , $tick ;
-	printf "Notifying all peers new tick for yec: %s\n", $tick->{'entity'}->{'yec'} ;	
-	foreach ( $self -> {'peers' } ) {
+	my $yec = $tick->{'entity'}->{'yec'} ;
+	printf "Notifying all peers new tick for yec: %s\n", $yec;
 
+	#foreach my $peer ( @{$self -> {'peers' }} ) {
+	foreach my $peer ( @peers ) {
+	    # We should check if they subscribed to this
+	    # yec
+	    printf "Does peer %s want it?\n" , $peer  ;
+	    #if ( $peer->wants($yec) ) { 
+
+		#$peer -> notify($tick) ;
+		printf "Peer with id %s Notified\n" , $peer ;
+
+	    #}
+				
 	}
 	return  ;
 }
@@ -121,7 +149,14 @@ sub history {
 
 }
 
+sub serverListUrl {
 
+    my $self = shift ;
+    my $arg = shift ;
+    $self->{ 'serverListUrl'} = $arg if ( $arg ) ;
+    return $self->{ 'serverListUrl'} ;
+
+}
 
 sub newData {
 
@@ -141,13 +176,14 @@ sub listenerfake {
 
 }
 
+
 # Contacts snodes and listens
 # for control messages in the network
-sub listener {
+sub clistener {
 
     my $self = shift ;
 
-    my @serverlist = NodeCore::getServerList() ;
+    my @serverlist = NodeCore::getServerList( $self -> {"serverListUrl"} ) ;
 
     my $readServer_set = new IO::Select();
 
@@ -163,9 +199,11 @@ sub listener {
 	# Try servers in the list until we reach $MIN_SERVERS
 	# of course if serverlist is smaller than $MIN_SERVERS
 	# then serverlist size applies
+	printf "Node::clistener connected to %s servers\n", $readServer_set->count() ;
 	while ( $readServer_set->count() < $MIN_SERVERS && 
 		$readServer_set->count() < $#serverlist ) {
-	    for ( @{$self->{serverlist}}) {
+
+	    foreach ( @{$self->{serverlist}}) {
 		printf "Connecting to %s:%s\n" , $_->{'servername'},$_->{'port'} ;
 
 		my ($s, $tmpid) = NodeCore::connectToServer($_, $clientid) ;
@@ -174,9 +212,9 @@ sub listener {
 		if ( $s ) {
 		    $clientid = $tmpid ;
 		    my $peer = gethostbyaddr($s->peeraddr,"AF_INET") || $s->peerhost;
-		    printf "Node::listener Connected to %s and with an id $clientid\n", $peer ;
+		    printf "Node::clistener Connected to %s and with an id $clientid\n", $peer ;
 		    $readServer_set->add($s);
-		    print "Node::listener adding new server to the list of connected servers\n" ;
+		    print "Node::clistener adding new server to the list of connected servers\n" ;
 		    push @{$cserverlist} , $_->{'servername'} . ":" . $_->{'port'} ;
 		    # add the main socket to the set
 		}
@@ -209,45 +247,29 @@ sub listener {
 	} # While ready sockets
     } # infinite loop    
 
-    warn "Node::listener ENDS!!!!\n" ;
+    warn "Node::clistener ENDS!!!!\n" ;
     return ;
     # simulate some real traffic ...
     my $myEntity = Entity -> new( yec => "WEA.MADRID" ) ;
 
-    while (1) {
-	sleep 1;
-	my $newtick = $myEntity->createTick ( temperature => 25,
-					  humidity => 40) ;    
-
-	$self->newData($newtick) ;
-	
-	sleep 5 ;
-	$newtick = $myEntity->createTick ( temperature => 26,
-					   humidity => 39  ) ;    
-	$self->newData($newtick) ;
-	
-	sleep 5 ;
-	$newtick = $myEntity->createTick ( temperature => 27,
-					   humidity => 37  ) ;    
-	$self->newData($newtick) ;
-    }
-    
-
 }
 
-# This is teh server listener ...
+# This is the server listener ...
 # Waits for connections from :
 # - Nodes in the network
 # - SuperNodes
 sub slistener {
-
-    my $ss = NodeCore::snodeListenSocket() ;
+    my $self = shift ;
+    my $port = $self->{sport} || 5555 ;
+    my $ss = NodeCore::snodeListenSocket( $port ) ;
     my ($ns, $buf);
     my $readNode_set = new IO::Select($ss);
     printf "Node::slistener wait for connections\n" ;
     
     while(my @ready = $readNode_set->can_read) {
+
 	foreach my $rh (@ready) {
+
 	    if($rh == $ss) {
 		# Create a new socket
 		my $new = $ss->accept;
@@ -263,22 +285,27 @@ sub slistener {
 		    # ... process $buf ...		    
 		    print "Node::slistener It says $buf\n" ;
 		    if ( $buf =~ /GET\ \/HELO/ ) {
-			print "Lets reply with an RHELO ...";
+			print "Node::slistener() Lets reply with an RHELO ...\n";
 			print $rh "RHELO\n" ;
 
 			# Check if this has a client id already
 			# if not provide one
-
+			my $clid ;
 			if ( $buf =~ /HELO\ (.+)/ ) {
+			    $clid = $1 ;
 			    print $rh "CLID $1\n" ;			    
 
 			} else {
-
-			    print $rh "CLID 123123123\n" ;
+			    $clid = int( 1000000 * rand() ) ;
+			    print $rh "CLID $clid\n" ;
 			}
+			print $rh "CLID $clid\n" ;	
+			push ( @peers, $clid ) ;
+			push ( @{$self->{peers}}, $rh ) ;
 		    }
 		}
-		else { # the client has closed the socket
+		else { 
+                    # the client has closed the socket
 		    # remove the socket from the $read_set and close it
 		    print "Node::slistener closes connection\n" ;
 		    $readNode_set->remove($rh);
@@ -292,20 +319,24 @@ sub slistener {
 }    
 
 sub serverListAdd {
-
+    my $self = shift ;
     my @serverlist = @_ ;
+
     my @newlist = @{$self->{serverlist }};
 
     my %control ;
+    
     
     for ( @newlist ) {
 	my $tmpkey = $_->{'servername'} . ":" . $_->{'port'} ;
 	$control{$tmpkey} = 1 ;
     }
 
+    # Ensure we are not duplicating entries
+    # so store in the newlist only new entries
     for (@serverlist) {
 	my $tmpkey = $_->{'servername'} . ":" . $_->{'port'} ;
-	push @newlist if ( ! $control{$tmpkey} ) ;
+	push @newlist, $_ if ( ! $control{$tmpkey} ) ;
     } 
 
     $self->{serverlist} = \@newlist ;
@@ -318,7 +349,8 @@ sub stats {
     while(1) {
 	my @cserverlist = @{$cserverlist} ;
 	print "We are clientid $clientid connected to : $#cserverlist + 1 servers\n" ;
-	for (@cserverlist) { print "Server: $_\n" ;} 
+	my $tmp = 1 ;
+	for (@cserverlist) { print "Server $tmp: $_\n" ; $tmp++; } 
 	sleep(10) ;
     }
 

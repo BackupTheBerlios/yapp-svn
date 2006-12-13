@@ -7,7 +7,7 @@
 # 
 
 use lib './', '/home/http/public/yappi' ;
-use Yappi ;
+
 use Yappi::Node ;
 use Yappi::Entity ;
 
@@ -37,6 +37,10 @@ $yappi_node -> statusCallback ( \&newStatus ) ;
 
 $yappi_node -> subscribe ( "WEA.MADRID" ) ;
 $yappi_node -> subscribe ( "WEA.THONEX" ) ;
+$yappi_node -> setIncomingPort(5556) ;
+
+# You should not do this, normally
+$yappi_node -> {'serverEnabled'} = 0 ;
 $yappi_node -> start() ;
 
 my %subscriptions =  %{$yappi_node -> subscriptions()} ;

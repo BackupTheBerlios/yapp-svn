@@ -19,7 +19,7 @@ sub createTick {
     my $tick = new Yappi::Tick ;
     
     for (keys  %data ) {
-	# printf "Setting %s = %s \n", $_,$data{$_} ;
+	printf "Setting %s = %s \n", $_,$data{$_} ;
 	$tick->{$_} = $data{$_} ;
 	$tick -> {time} = time ;
 

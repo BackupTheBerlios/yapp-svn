@@ -7,16 +7,16 @@ use IO::Select;
 use IO::Socket;
 # This is 
 sub snodeListenSocket {
-
+    my $port = shift ;
     my $s = new IO::Socket::INET
 	(
-	 LocalHost => "0.0.0.0",
-	 LocalPort => 5555,
+	 LocalAddr => "localhost",
+	 LocalPort => $port ,
 	 Proto => 'tcp',
 	 Listen => 16,
 	 Reuse => 1,
 	 );
-    warn "Coulnt not open listeing snode listen socket: $! \n" unless $s ;
+    warn "Coulnt not open listening snode listen socket: $! \n" unless $s ;
 }
 
 sub connectToServer {
